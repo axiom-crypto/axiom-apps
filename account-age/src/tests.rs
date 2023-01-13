@@ -1,17 +1,6 @@
 use super::*;
 use axiom_eth::providers::{GOERLI_PROVIDER_URL, MAINNET_PROVIDER_URL};
-use halo2_base::{
-    gates::GateInstructions,
-    halo2_proofs::{
-        circuit::{Layouter, SimpleFloorPlanner, Value},
-        dev::MockProver,
-        halo2curves::bn256::{Bn256, Fr, G1Affine},
-        plonk::{Circuit, ConstraintSystem, Error},
-    },
-    AssignedValue, Context, ContextParams,
-    QuantumCell::{Constant, Existing},
-    SKIP_FIRST_PASS,
-};
+use halo2_base::halo2_proofs::{dev::MockProver, halo2curves::bn256::Fr};
 
 fn get_test_circuit<F: Field>(network: Network) -> AccountAgeCircuit<F> {
     let infura_id = std::fs::read_to_string("configs/INFURA_ID").expect("Infura ID not found");
@@ -28,9 +17,6 @@ fn get_test_circuit<F: Field>(network: Network) -> AccountAgeCircuit<F> {
             // vitalik.eth
             addr = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045".parse::<Address>().unwrap();
             block_number = 0x4dc40;
-            //// UniV3 deployer
-            //addr = "0x6c9fc64a53c1b71fb3f9af64d1ae3a4931a5f4e9".parse::<Address>().unwrap();
-            //block_number = 0xbcbed5;
         }
         Network::Goerli => {
             // vitalik.eth
@@ -74,7 +60,7 @@ pub fn test_evm_mainnet_account_age() {
         let k = AppConfigParams::get_account_age().degree;
         let circuit = get_test_circuit::<Fr>(Network::Mainnet);
         let params = gen_srs(k);
-        let pk = gen_pk(&params, &circuit, None);
+        let pk = gen_pk(&params, &circuit, Some(Path::new("data/account_age/pk_age_circuit.dat")));
         gen_snark_shplonk(&params, &pk, circuit, &mut transcript, &mut rng, None::<&str>)
     };
 
@@ -87,19 +73,19 @@ pub fn test_evm_mainnet_account_age() {
         &mut transcript,
         &mut rng,
     );
-    let pk = gen_pk(&params, &evm_circuit, None);
+    let pk = gen_pk(&params, &evm_circuit, Some(Path::new("data/account_age/pk_evm_circuit.dat")));
 
     let instances = evm_circuit.instances();
     let num_instances = instances[0].len();
     let proof = gen_evm_proof_shplonk(&params, &pk, evm_circuit, instances.clone(), &mut rng);
     fs::create_dir_all("../data/account_age").unwrap();
-    write_calldata(&instances, &proof, Path::new("../data/storage/test.calldata")).unwrap();
+    write_calldata(&instances, &proof, Path::new("../data/account_age/test.calldata")).unwrap();
 
     let deployment_code = gen_evm_verifier_shplonk::<PublicAggregationCircuit>(
         &params,
         pk.get_vk(),
         vec![num_instances],
-        Some(Path::new("../data/storage/test.yul")),
+        Some(Path::new("../data/account_age/test.yul")),
     );
 
     evm_verify(deployment_code, instances, proof);

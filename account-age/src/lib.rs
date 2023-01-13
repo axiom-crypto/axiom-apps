@@ -28,6 +28,7 @@ use serde::{Deserialize, Serialize};
 use snark_verifier_sdk::CircuitExt;
 use std::{env::var, fs::File};
 
+#[cfg(test)]
 mod tests;
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -79,18 +80,9 @@ pub struct AccountAgeInstance {
     addr: Address,
 }
 
-// TODO: Move to src/block_header/mod.rs
-#[allow(unused)]
-#[derive(Clone)]
-struct EthBlockInput {
-    pub block_number: u32,
-    pub block_hash: H256,
-    pub block_header: Vec<u8>,
-}
-
 #[derive(Clone)]
 pub struct AccountAgeInput {
-    block_inputs: [EthBlockInput; 2],
+    block_inputs: [Vec<u8>; 2],
     block_storage_inputs: [EthBlockStorageInput; 2],
 }
 
@@ -141,7 +133,7 @@ impl<F: Field> AccountAgeCircuit<F> {
         use axiom_eth::block_header::{
             GOERLI_BLOCK_HEADER_RLP_MAX_BYTES, MAINNET_BLOCK_HEADER_RLP_MAX_BYTES,
         };
-        use axiom_eth::providers::{get_block_storage_input, get_blocks_input};
+        use axiom_eth::providers::get_block_storage_input;
 
         // Retrieve block storage proofs from provider
         let block_storage_inputs: [_; 2] = (0..2)
@@ -160,28 +152,23 @@ impl<F: Field> AccountAgeCircuit<F> {
             .try_into()
             .unwrap();
 
-        // Retrieve block headers from provider
+        // Pad block header RLPs to max size
         let header_rlp_max_bytes = match network {
             Network::Mainnet => MAINNET_BLOCK_HEADER_RLP_MAX_BYTES,
             Network::Goerli => GOERLI_BLOCK_HEADER_RLP_MAX_BYTES,
         };
-        let (mut block_rlps, block_instance) = get_blocks_input(provider, block_number - 1, 2, 1);
+        let mut block_rlps: [Vec<u8>; 2] = block_storage_inputs
+            .iter()
+            .map(|i| i.block_header.clone())
+            .collect::<Vec<_>>()
+            .try_into()
+            .unwrap();
         for block_rlp in block_rlps.iter_mut() {
             block_rlp.resize(header_rlp_max_bytes, 0u8);
         }
-        let prev_block_input = EthBlockInput {
-            block_number: block_number - 1,
-            block_hash: block_instance.prev_hash,
-            block_header: block_rlps[0].clone(),
-        };
-        let curr_block_input = EthBlockInput {
-            block_number,
-            block_hash: block_instance.end_hash,
-            block_header: block_rlps[1].clone(),
-        };
 
         let input = AccountAgeInput {
-            block_inputs: [prev_block_input, curr_block_input],
+            block_inputs: block_rlps,
             block_storage_inputs: block_storage_inputs.clone(),
         };
         let instance = AccountAgeInstance {
@@ -256,12 +243,7 @@ impl<F: Field + PrimeField> Circuit<F> for AccountAgeCircuit<F> {
                     // Witness for blocks k and k-1
                     let block_witnesses = chip.decompose_block_header_chain_phase0(
                         ctx,
-                        &self
-                            .input
-                            .block_inputs
-                            .iter()
-                            .map(|b| b.block_header.clone())
-                            .collect::<Vec<_>>(),
+                        &self.input.block_inputs,
                         self.network,
                     );
 
