@@ -8,16 +8,47 @@ contract AccountAge {
     address plonkVerifier;
     address blockCache;
 
-    mapping(address => uint) public ages;
+    mapping(address => uint) public birthBlock;
+
+    struct BlockHashWitness {
+        uint32 blockNumber;
+        bytes32 claimedBlockHash;
+        bytes32 prevHash;
+        uint32 numFinal;
+        bytes32[4] merkleProof;
+    }
 
     constructor(address _plonkVerifier, address _blockCache) {
         plonkVerifier = _plonkVerifier;
         blockCache = _blockCache;
     }
 
-    function verifyAge(address account, uint256 blockNumber, bytes calldata proof) public {
-        uint256 prevBlockHash = MockBlockCache(blockCache).getBlockHash(blockNumber - 1);
-        uint256 currBlockHash = MockBlockCache(blockCache).getBlockHash(blockNumber);
+    function verifyAge(
+        address account,
+        BlockHashWitness memory prevBlock,
+        BlockHashWitness memory currBlock,
+        bytes calldata proof
+    ) public {
+        require(
+            MockBlockCache(blockCache).isBlockHashValid(
+                prevBlock.blockNumber,
+                prevBlock.claimedBlockHash,
+                prevBlock.prevHash,
+                prevBlock.numFinal,
+                prevBlock.merkleProof
+            ),
+            "Invalid previous block hash in cache"
+        );
+        require(
+            MockBlockCache(blockCache).isBlockHashValid(
+                currBlock.blockNumber,
+                currBlock.claimedBlockHash,
+                currBlock.prevHash,
+                currBlock.numFinal,
+                currBlock.merkleProof
+            ),
+            "Invalid current block hash in cache"
+        );
 
         // Extract instances from proof 
         uint256 _prevBlockHash = uint256(bytes32(proof[384    :384+32 ])) << 128 | 
@@ -28,10 +59,13 @@ contract AccountAge {
         address _account       = address(bytes20(proof[384+172:384+204]));
 
         // Check instance values
-        if (_prevBlockHash != prevBlockHash || _currBlockHash != currBlockHash) {
-            revert("Invalid block hash");
+        if (_prevBlockHash != uint256(prevBlock.claimedBlockHash)) {
+            revert("Invalid previous block hash in instance");
         }
-        if (_blockNumber != blockNumber) {
+        if (_currBlockHash != uint256(currBlock.claimedBlockHash)) {
+            revert("Invalid current block hash in instance");
+        }
+        if (_blockNumber != currBlock.blockNumber) {
             revert("Invalid block number");
         }
         if (_account != account) {
@@ -46,6 +80,6 @@ contract AccountAge {
         if (!success) {
             revert("Plonk verification failed");
         }
-        ages[account] = blockNumber;
+        birthBlock[account] = _blockNumber;
     }
 }

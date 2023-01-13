@@ -10,7 +10,16 @@ contract MockBlockCache {
         cache[number] = hash;
     }
 
-    function getBlockHash(uint256 number) public view returns (uint256) {
-        return cache[number];
+    uint8 constant TREE_DEPTH = 4;
+
+    function isBlockHashValid(
+        uint32 blockNumber,
+        bytes32 claimedBlockHash,
+        bytes32 prevHash,
+        uint32 numFinal,
+        bytes32[TREE_DEPTH] calldata merkleProof
+    ) public view returns (bool) {
+        // For testing purposes, check only that the claimed block hash is in the cache
+        return (cache[blockNumber] == uint256(claimedBlockHash));
     }
 }
