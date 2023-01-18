@@ -469,6 +469,9 @@ impl<F: Field + PrimeField> Circuit<F> for UniswapTwapCircuit<F> {
                     let timestamp_diff = chip.gate().sub(ctx, Existing(&end_timestamp), Existing(&start_timestamp));
                     let twap_pri = chip.range().div_mod_var(ctx, Existing(&cumulativePrice_diff), Existing(&timestamp_diff), 254usize, 32usize).0;
 
+                    #[cfg(feature = "display")]
+                    println!("twap_pri {:?}", twap_pri);
+                    println!("twap_pri_instance {:?}", self.instance.twap_pri);
                     instances.extend(
                         iter::empty()
                             .chain([
@@ -506,7 +509,7 @@ impl<F: Field + PrimeField> Circuit<F> for UniswapTwapCircuit<F> {
 
 impl<F: Field + PrimeField> CircuitExt<F> for UniswapTwapCircuit<F> {
     fn num_instance(&self) -> Vec<usize> {
-        vec![6]
+        vec![7]
     }
 
     fn instances(&self) -> Vec<Vec<F>> {

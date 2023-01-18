@@ -79,14 +79,14 @@ pub fn test_evm_mainnet_uniswap() {
     let instances = evm_circuit.instances();
     let num_instances = instances[0].len();
     let proof = gen_evm_proof_shplonk(&params, &pk, evm_circuit, instances.clone(), &mut rng);
-    fs::create_dir_all("../data/uniswap_twap").unwrap();
-    write_calldata(&instances, &proof, Path::new("../data/uniswap_twap/test.calldata")).unwrap();
+    fs::create_dir_all("data/uniswap_twap").unwrap();
+    write_calldata(&instances, &proof, Path::new("data/uniswap_twap/test.calldata")).unwrap();
 
     let deployment_code = gen_evm_verifier_shplonk::<PublicAggregationCircuit>(
         &params,
         pk.get_vk(),
         vec![num_instances],
-        Some(Path::new("../data/uniswap_twap/test.yul")),
+        Some(Path::new("data/uniswap_twap/test.yul")),
     );
 
     evm_verify(deployment_code, instances, proof);
