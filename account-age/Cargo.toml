@@ -14,10 +14,11 @@ serde_json = { version = "1.0", default-features = false }
 ark-std = { version = "0.3.0", features = ["print-trace"], optional = true }
 
 # axiom
-axiom-eth = { path = "../../axiom-eth", features = ["halo2-axiom", "aggregation", "evm", "providers"], default-features = false }
+axiom-eth = { git = "ssh://git@github.com/axiom-crypto/axiom-core-working.git", features = ["halo2-axiom", "aggregation", "evm", "providers"], default-features = false }
 
 # halo2
-halo2-base = { path = "../../halo2-lib/halo2-base", default-features = false }
+halo2_proofs_axiom = { git = "https://github.com/axiom-crypto/halo2.git", branch = "axiom/faster-witness-generation", package = "halo2_proofs"}
+halo2-base = { git = "ssh://git@github.com/axiom-crypto/axiom-core-working.git", features = ["halo2-axiom"], default-features = false }
 
 # crypto
 ethers-core = { version = "1.0.2" } # used by halo2-mpt already
@@ -25,8 +26,8 @@ rand = "0.8"
 rand_chacha = "0.3.1"
 
 # aggregation 
-snark-verifier = { git = "https://github.com/axiom-crypto/snark-verifier.git", branch = "jpw/dev", default-features = false, features = ["loader_halo2"] }
-snark-verifier-sdk = { git = "https://github.com/axiom-crypto/snark-verifier.git", branch = "jpw/dev", default-features = false, features = ["loader_halo2"] }
+snark-verifier = { git = "https://github.com/axiom-crypto/snark-verifier.git", default-features = false, features = ["loader_halo2", "halo2-axiom"] }
+snark-verifier-sdk = { git = "https://github.com/axiom-crypto/snark-verifier.git", default-features = false, features = ["loader_halo2", "halo2-axiom"] }
 
 # generating circuit inputs from blockchain
 ethers-providers = { version = "1.0.2" }  

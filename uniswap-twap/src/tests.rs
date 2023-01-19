@@ -48,13 +48,11 @@ pub fn test_evm_mainnet_uniswap() {
         gen_pk,
         halo2::{
             aggregation::{load_verify_circuit_degree, PublicAggregationCircuit},
-            gen_snark_shplonk, PoseidonTranscript, POSEIDON_SPEC,
+            gen_snark_shplonk,
         },
-        CircuitExt, NativeLoader,
+        CircuitExt,
     };
 
-    let mut transcript =
-        PoseidonTranscript::<NativeLoader, _>::from_spec(vec![], POSEIDON_SPEC.clone());
     let mut rng = rand_chacha::ChaChaRng::from_seed([0; 32]);
 
     let uniswap_twap_snark = {
@@ -62,7 +60,7 @@ pub fn test_evm_mainnet_uniswap() {
         let circuit = get_test_circuit::<Fr>(Network::Mainnet);
         let params = gen_srs(k);
         let pk = gen_pk(&params, &circuit, Some(Path::new("data/uniswap_twap/pk_uniswap_circuit.dat")));
-        gen_snark_shplonk(&params, &pk, circuit, &mut transcript, &mut rng, None::<&str>)
+        gen_snark_shplonk(&params, &pk, circuit, &mut rng, None::<&str>)
     };
 
     let k = load_verify_circuit_degree();
@@ -71,7 +69,6 @@ pub fn test_evm_mainnet_uniswap() {
         &params,
         vec![uniswap_twap_snark],
         false,
-        &mut transcript,
         &mut rng,
     );
     let pk = gen_pk(&params, &evm_circuit, Some(Path::new("data/uniswap_twap/pk_evm_circuit.dat")));

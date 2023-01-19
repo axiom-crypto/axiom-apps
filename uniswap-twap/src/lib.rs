@@ -7,21 +7,21 @@ use axiom_eth::{
     mpt::MPTFixedKeyProof,
     storage::{EthBlockStorageInput, EthStorageChip, EthBlockAccountStorageTraceWitness, EthBlockAccountStorageTrace},
     util::{
-        bytes_be_to_u128, bytes_be_var_to_fixed, encode_addr_to_field, encode_h256_to_field,
-        uint_to_bytes_be, EthConfigParams, encode_u256_to_field,
+        bytes_be_to_u128, bytes_be_var_to_fixed, encode_h256_to_field,
+        EthConfigParams, encode_u256_to_field,
     },
     EthChip, EthConfig, Field, Network,
 };
 use core::{iter, marker::PhantomData};
-use ethers_core::types::{Address, H256, U256, U128};
+use ethers_core::types::{Address, H256, U256};
 use ethers_providers::{Http, Provider};
 use halo2_base::{
     gates::{GateInstructions, RangeInstructions},
     halo2_proofs::{
-        circuit::{Layouter, SimpleFloorPlanner, Value},
+        circuit::{Layouter, SimpleFloorPlanner},
         plonk::{Circuit, ConstraintSystem, Error},
     },
-    utils::{PrimeField, biguint_to_fe},
+    utils::{PrimeField},
     AssignedValue, Context, ContextParams,
     QuantumCell::Existing,
     SKIP_FIRST_PASS,
