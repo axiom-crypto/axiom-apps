@@ -6,3 +6,7 @@
 	url = https://github.com/foundry-rs/forge-std
 [submodule "lib/forge-std/"]
 	branch = v1.2.0
+[submodule "lib/axiom-contracts"]
+	path = lib/axiom-contracts
+	url = https://github.com/axiom-crypto/axiom-contracts-working
+	branch = block_hash
