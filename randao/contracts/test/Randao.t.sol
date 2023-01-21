@@ -7,11 +7,11 @@ import "@axiom/src/AxiomDemo.sol";
 import "../src/Randao.sol";
 import "../lib/YulDeployer.sol";
 
-uint32 constant testBlockNumber = 0xf929e6;
-uint32 constant testPrevBlockNumber = 16328704;
-bytes32 constant testBlockHash = bytes32(hex"eaa53f3fbfe912c45af96f4a1a34e3cb1de8e9ac1b6fe8d8b1c9eadad976eda9");
-bytes32 constant testPrevHash = bytes32(hex"87445763da0b6836b89b8189c4fe71861987aa9af5a715bfb222a7978d98630d");
-bytes32 constant testRoot = bytes32(hex"94768cc8e722c0dfa1be6e2326573764102b7a80685a3e98d340ab121e7277cd");
+uint32 constant testBlockNumber = 15537393;
+uint32 constant testPrevBlockNumber = 15537152;
+bytes32 constant testBlockHash = bytes32(hex"55b11b918355b1ef9c5db810302ebad0bf2544255b530cdce90674d5887bb286");
+bytes32 constant testPrevHash = bytes32(hex"a9d44102e2414cef64b15e650b841ab630b772b733e30d1019d91d168e415468");
+bytes32 constant testRoot = bytes32(hex"5425b718c94550877486f0b9b52d01425c1e6262e5d6a5402e9eb8344e4239c7");
 uint32 constant testNumFinal = 0;
 
 contract RandaoTest is Test {
@@ -48,16 +48,16 @@ contract RandaoTest is Test {
         // Prepare witness data for Uniswap TWAP proof.
         // Note that only the claimed block hash is checked in the test.
         bytes32[10] memory blockMerkleProof = [
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000),
-            bytes32(0x0000000000000000000000000000000000000000000000000000000000000000)                  
+            bytes32(0x2b3ea3cd4befcab070812443affb08bf17a91ce382c714a536ca3cacab82278b),
+            bytes32(0xb2963b40c8811b7659c2425d357daa4165c5710493ab4cf0293d30d98a621c53),
+            bytes32(0x7d0ee8935eb7043fa21a29a90a734165170dd8aafbec8628c3d94b006a8efb75),
+            bytes32(0x6296f8a7f7225045ea4e812d5fc4352861d1069eaef2ff7896adc2445803eee6),
+            bytes32(0xf7b917c02728fd0513d726200a4169b9c3558a0b1b86d01f9a6d85c4494e4901),
+            bytes32(0x933c8f3e40ca3f46a8c4d64557ff7d8b9b7007890d86e01a7de68cc27dba4bdc),
+            bytes32(0xc5a9564ad180dfc461af09fb31d537bcca46f71959041bd572c60b847e171b5b),
+            bytes32(0x456fb200c357e2247a22a43756c7775a1a7a899024c18686673e003817eec534),
+            bytes32(0xb11f638166e5dbfea2261971c9d4a8a2008eea043cd4b1074f8ad727b1f14ce6),
+            bytes32(0x3b506100b1b0de2e657521e4c43d1a41dfeb4ac189139de5d7f4d99fa0672acb)
         ];
         Axiom.BlockHashWitness memory block = Axiom.BlockHashWitness({
             blockNumber: testBlockNumber,
@@ -66,7 +66,7 @@ contract RandaoTest is Test {
             numFinal: 0,
             merkleProof: blockMerkleProof
         });
-        uint256 prevRandao = 0x77e70a1ebdeffad090cf2b0c8a126b9a6d5befa12669ff0e5001997e1a326599;
+        uint256 prevRandao = 0x4cbec03dddd4b939730a7fe6048729604d4266e82426d472a2b2024f3cc4043f;
 
         // Call verify function in app
         app.verifyRandao(block, prevRandao, blockRlpPrev, blockRlpPost);
