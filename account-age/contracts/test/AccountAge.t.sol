@@ -42,7 +42,6 @@ contract AccountAgeTest is Test {
         bytes memory proof = vm.ffi(inputs);
 
         // Prepare witness data for account age proof.
-        // Note that only the claimed block hash is checked in the test.
         address account = 0xd20BebA9eFA30fB34aF93AF5c91C9a4d6854eAC4;
         uint32 blockNumber = 7223086;
         bytes32[TREE_DEPTH] memory prevBlockMerkleProof = [
