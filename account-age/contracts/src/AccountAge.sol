@@ -1,36 +1,27 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "forge-std/Script.sol";
-import "../test/MockBlockCache.sol";
+import "@axiom/src/Axiom.sol";
 
 contract AccountAge {
     address plonkVerifier;
-    address blockCache;
+    address axiomAddress;
 
     mapping(address => uint) public birthBlock;
 
-    struct BlockHashWitness {
-        uint32 blockNumber;
-        bytes32 claimedBlockHash;
-        bytes32 prevHash;
-        uint32 numFinal;
-        bytes32[4] merkleProof;
-    }
-
-    constructor(address _plonkVerifier, address _blockCache) {
+    constructor(address _plonkVerifier, address _axiomAddress) {
         plonkVerifier = _plonkVerifier;
-        blockCache = _blockCache;
+        axiomAddress = _axiomAddress;
     }
 
     function verifyAge(
         address account,
-        BlockHashWitness memory prevBlock,
-        BlockHashWitness memory currBlock,
+        Axiom.BlockHashWitness memory prevBlock,
+        Axiom.BlockHashWitness memory currBlock,
         bytes calldata proof
     ) public {
         require(
-            MockBlockCache(blockCache).isBlockHashValid(
+            Axiom(axiomAddress).isBlockHashValid(
                 prevBlock.blockNumber,
                 prevBlock.claimedBlockHash,
                 prevBlock.prevHash,
@@ -40,7 +31,7 @@ contract AccountAge {
             "Invalid previous block hash in cache"
         );
         require(
-            MockBlockCache(blockCache).isBlockHashValid(
+            Axiom(axiomAddress).isBlockHashValid(
                 currBlock.blockNumber,
                 currBlock.claimedBlockHash,
                 currBlock.prevHash,
