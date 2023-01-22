@@ -1,41 +1,29 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "forge-std/Script.sol";
-import "../test/MockAxiom.sol";
-
-uint8 constant TREE_DEPTH = 10;
+import "@axiom/src/Axiom.sol";
 
 contract UniswapTwap {
     address plonkVerifier;
-    address blockCache;
+    address axiomAddress;
 
     // mapping between packed [startBlockNumber (32) || endBlockNumber (32)] and twapPri
     mapping(uint64 => uint256) public twapPris;
 
     event UniswapTwapProof(uint32 startBlockNumber, uint32 endBlockNumber, uint256 twapPri);
 
-    struct BlockHashWitness {
-        uint32 blockNumber;
-        bytes32 claimedBlockHash;
-        bytes32 prevHash;
-        uint32 numFinal;
-        bytes32[TREE_DEPTH] merkleProof;
-    }
-
-    constructor(address _plonkVerifier, address _blockCache) {
+    constructor(address _plonkVerifier, address _axiomAddress) {
         plonkVerifier = _plonkVerifier;
-        blockCache = _blockCache;
+        axiomAddress = _axiomAddress;
     }
 
     function verifyUniswapTwap(
-        BlockHashWitness memory startBlock,
-        BlockHashWitness memory endBlock,
-        uint256 twapPri,
+        Axiom.BlockHashWitness memory startBlock,
+        Axiom.BlockHashWitness memory endBlock,
         bytes calldata proof
     ) public {
         require(
-            MockAxiom(blockCache).isBlockHashValid(
+            Axiom(axiomAddress).isBlockHashValid(
                 startBlock.blockNumber,
                 startBlock.claimedBlockHash,
                 startBlock.prevHash,
@@ -45,7 +33,7 @@ contract UniswapTwap {
             "Invalid starting block hash in cache"
         );
         require(
-            MockAxiom(blockCache).isBlockHashValid(
+            Axiom(axiomAddress).isBlockHashValid(
                 endBlock.blockNumber,
                 endBlock.claimedBlockHash,
                 endBlock.prevHash,
@@ -77,15 +65,12 @@ contract UniswapTwap {
         if (_endBlockNumber != endBlock.blockNumber) {
             revert("Invalid endBlockNumber");
         }        
-        if (_twapPri != twapPri) {
-            revert("Invalid twapPri");
-        }
 
         (bool success, ) = plonkVerifier.call(proof);
         if (!success) {
             revert("Plonk verification failed");
         }
-        emit UniswapTwapProof(startBlock.blockNumber, endBlock.blockNumber, twapPri);
+        emit UniswapTwapProof(startBlock.blockNumber, endBlock.blockNumber, _twapPri);
         twapPris[uint64(uint64(startBlock.blockNumber) << 32 | endBlock.blockNumber)] = _twapPri;
     }
 }
