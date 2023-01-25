@@ -8,4 +8,4 @@
 	branch = v1.2.0
 [submodule "lib/axiom-contracts"]
 	path = lib/axiom-contracts
-	url = https://github.com/axiom-crypto/axiom-contracts-working
+	url = ssh://github.com/axiom-crypto/axiom-contracts-working
