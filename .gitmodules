@@ -9,4 +9,3 @@
 [submodule "lib/axiom-contracts"]
 	path = lib/axiom-contracts
 	url = https://github.com/axiom-crypto/axiom-contracts-working
-	branch = block_hash
