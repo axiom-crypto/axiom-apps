@@ -1,0 +1,23 @@
+{
+  "name": "proving-server",
+  "version": "0.0.1",
+  "description": "Remote proving server for zkAttestor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ethers": "^5.7.2",
+    "express": "^4.17.1",
+    "express-rate-limit": "^6.4.0",
+    "object-hash": "^2.2.0",
+    "path": "^0.12.7",
+    "start": "^5.1.0",
+    "ws": "^8.8.0"
+  }
+}
