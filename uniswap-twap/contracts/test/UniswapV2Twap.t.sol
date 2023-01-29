@@ -65,8 +65,6 @@ contract UniswapTwapTest is Test {
 
         UniswapV2Twap uniswap = new UniswapV2Twap(AXIOM_ADDRESS, verifierAddress);
         uniswap.verifyUniswapV2Twap(startBlock, endBlock, proof);
-        console.log(uniswap.twapPris((uint64(startBlock.blockNumber) << 32) | endBlock.blockNumber));
-        console.log(twapPri);
         require(uniswap.twapPris((uint64(startBlock.blockNumber) << 32) | endBlock.blockNumber) == twapPri, 
                 "TwapPri not verified");
     }

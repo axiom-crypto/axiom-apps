@@ -64,7 +64,7 @@ contract UniswapV2Twap {
 
         (bool success, ) = verifierAddress.call(proof);
         if (!success) {
-            revert("Plonk verification failed");
+            revert("Proof verification failed");
         }
         twapPris[uint64(uint64(startBlock.blockNumber) << 32 | endBlock.blockNumber)] = _twapPri;
         emit UniswapV2TwapProof(startBlock.blockNumber, endBlock.blockNumber, _twapPri);        
