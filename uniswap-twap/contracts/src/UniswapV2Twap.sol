@@ -20,8 +20,8 @@ contract UniswapV2Twap {
     }
 
     function verifyUniswapV2Twap(
-        IAxiomV0.BlockHashWitness memory startBlock,
-        IAxiomV0.BlockHashWitness memory endBlock,
+        IAxiomV0.BlockHashWitness calldata startBlock,
+        IAxiomV0.BlockHashWitness calldata endBlock,
         bytes calldata proof
     ) external {
         if (block.number - startBlock.blockNumber <= 256) {

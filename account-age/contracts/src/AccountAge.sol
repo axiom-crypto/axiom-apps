@@ -19,10 +19,10 @@ contract AccountAge {
     }
 
     function verifyAge(
-        IAxiomV0.BlockHashWitness memory prevBlock,
-        IAxiomV0.BlockHashWitness memory currBlock,
+        IAxiomV0.BlockHashWitness calldata prevBlock,
+        IAxiomV0.BlockHashWitness calldata currBlock,
         bytes calldata proof
-    ) public {
+    ) external {
         if (block.number - prevBlock.blockNumber <= 256) {
             require(IAxiomV0(axiomAddress).isRecentBlockHashValid(prevBlock.blockNumber, prevBlock.claimedBlockHash),
                     "Prev block hash was not validated in cache");
