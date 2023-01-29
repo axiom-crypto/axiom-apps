@@ -16,13 +16,8 @@ contract RandaoTest is Test {
         // Import test proof and instance calldata
         string[] memory inputs = new string[](2);
         inputs[0] = "cat";
-        inputs[1] = "test/data/testPrev.calldata";
-        bytes memory prev = vm.ffi(inputs);
-
-        string[] memory inputs2 = new string[](2);
-        inputs2[0] = "cat";
-        inputs2[1] = "test/data/testPrev.calldata";
-        bytes memory post = vm.ffi(inputs2);        
+        inputs[1] = "test/data/test.calldata";
+        bytes memory proof = vm.ffi(inputs);       
 
         IAxiomV0.BlockHashWitness memory testBlock = IAxiomV0.BlockHashWitness({
             blockNumber: 16509301,
@@ -40,10 +35,10 @@ contract RandaoTest is Test {
                           bytes32(0x3afb75397f28a7fbd51498e7a109865e34edf93ecce9ba4686d7d0fb7b86c63b),
                           bytes32(0x2953bc9d2dfc756b8d46e849da5971dbe1989603b06b7235627529d2e0e5df1d)]
         });
-        uint256 prevRandao = 0x4cbec03dddd4b939730a7fe6048729604d4266e82426d472a2b2024f3cc4043f;
+        uint256 prevRandao = 0xa97f47e048f1ddf11b7a8d2c265014cfcec2506d765a393406f6046960d059dc;
 
         Randao randao = new Randao(AXIOM_ADDRESS);
-        randao.verifyRandao(testBlock, prevRandao, prev, post);
+        randao.verifyRandao(testBlock, proof);
         require(randao.prevRandaos(testBlock.blockNumber) == prevRandao, 
                 "prevRandao not verified");
     }    
