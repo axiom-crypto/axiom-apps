@@ -394,6 +394,7 @@ impl<F: Field + PrimeField> Circuit<F> for UniswapTwapCircuit<F> {
                         .try_into()
                         .unwrap()
                     };
+                    chip.range().check_less_than(ctx, Existing(&start_block_number[0]), Existing(&end_block_number[0]), 32usize);
 
                     let zero = chip.gate().load_zero(ctx);
                     let eight = chip.gate().load_constant(ctx, F::from(8));
