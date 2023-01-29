@@ -1,45 +1,42 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+// SPDX-License-Identifier: MIT
+// WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
+// DO NOT USE THIS CONTRACT FOR PRODUCTION
+pragma solidity ^0.8.12;
 
-import "@axiom/src/Axiom.sol";
+import "./IAxiomV0.sol";
 
 contract AccountAge {
-    address plonkVerifier;
-    address axiomAddress;
+    address private axiomAddress;    
+    address private verifierAddress;
 
-    mapping(address => uint) public birthBlock;
+    mapping(address => uint32) public birthBlocks;
 
-    constructor(address _plonkVerifier, address _axiomAddress) {
-        plonkVerifier = _plonkVerifier;
-        axiomAddress = _axiomAddress;
+    event AccountAgeProof(address account, uint32 blockNumber);
+
+    constructor(address _axiomAddress, address _verifierAddress) {
+        axiomAddress = _axiomAddress;        
+        verifierAddress = _verifierAddress;
     }
 
     function verifyAge(
-        address account,
-        Axiom.BlockHashWitness memory prevBlock,
-        Axiom.BlockHashWitness memory currBlock,
+        IAxiomV0.BlockHashWitness memory prevBlock,
+        IAxiomV0.BlockHashWitness memory currBlock,
         bytes calldata proof
     ) public {
-        require(
-            Axiom(axiomAddress).isBlockHashValid(
-                prevBlock.blockNumber,
-                prevBlock.claimedBlockHash,
-                prevBlock.prevHash,
-                prevBlock.numFinal,
-                prevBlock.merkleProof
-            ),
-            "Invalid previous block hash in cache"
-        );
-        require(
-            Axiom(axiomAddress).isBlockHashValid(
-                currBlock.blockNumber,
-                currBlock.claimedBlockHash,
-                currBlock.prevHash,
-                currBlock.numFinal,
-                currBlock.merkleProof
-            ),
-            "Invalid current block hash in cache"
-        );
+        if (block.number - prevBlock.blockNumber <= 256) {
+            require(IAxiomV0(axiomAddress).isRecentBlockHashValid(prevBlock.blockNumber, prevBlock.claimedBlockHash),
+                    "Prev block hash was not validated in cache");
+        } else {
+            require(IAxiomV0(axiomAddress).isBlockHashValid(prevBlock),
+                    "Prev block hash was not validated in cache");
+        }
+        if (block.number - currBlock.blockNumber <= 256) {
+            require(IAxiomV0(axiomAddress).isRecentBlockHashValid(currBlock.blockNumber, currBlock.claimedBlockHash),
+                    "Curr block hash was not validated in cache");
+        } else {
+            require(IAxiomV0(axiomAddress).isBlockHashValid(currBlock),
+                    "Curr block hash was not validated in cache");
+        }
 
         // Extract instances from proof 
         uint256 _prevBlockHash = uint256(bytes32(proof[384    :384+32 ])) << 128 | 
@@ -47,7 +44,7 @@ contract AccountAge {
         uint256 _currBlockHash = uint256(bytes32(proof[384+64 :384+96 ])) << 128 | 
                                  uint128(bytes16(proof[384+112:384+128]));
         uint256 _blockNumber   = uint256(bytes32(proof[384+128:384+160]));
-        address _account       = address(bytes20(proof[384+172:384+204]));
+        address account        = address(bytes20(proof[384+172:384+204]));
 
         // Check instance values
         if (_prevBlockHash != uint256(prevBlock.claimedBlockHash)) {
@@ -59,18 +56,16 @@ contract AccountAge {
         if (_blockNumber != currBlock.blockNumber) {
             revert("Invalid block number");
         }
-        if (_account != account) {
-            revert("Invalid account");
-        }
 
         // Verify the following statement: 
         //   nonce(account, blockNumber - 1) == 0 AND 
         //   nonce(account, blockNumber) != 0     AND
         //   codeHash(account, blockNumber) == keccak256([])
-        (bool success, ) = plonkVerifier.call(proof);
+        (bool success, ) = verifierAddress.call(proof);
         if (!success) {
-            revert("Plonk verification failed");
+            revert("Proof verification failed");
         }
-        birthBlock[account] = _blockNumber;
+        birthBlocks[account] = currBlock.blockNumber;
+        emit AccountAgeProof(account, currBlock.blockNumber);
     }
 }
