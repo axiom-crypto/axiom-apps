@@ -1,0 +1,4 @@
+(function() {var implementors = {
+"axiom_account_age":[["impl&lt;F:&nbsp;Field + PrimeField&gt; CircuitExt&lt;F&gt; for <a class=\"struct\" href=\"axiom_account_age/struct.AccountAgeCircuit.html\" title=\"struct axiom_account_age::AccountAgeCircuit\">AccountAgeCircuit</a>&lt;F&gt;"]],
+"axiom_uniswap_twap":[["impl&lt;F:&nbsp;Field + PrimeField&gt; CircuitExt&lt;F&gt; for <a class=\"struct\" href=\"axiom_uniswap_twap/struct.UniswapTwapCircuit.html\" title=\"struct axiom_uniswap_twap::UniswapTwapCircuit\">UniswapTwapCircuit</a>&lt;F&gt;"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

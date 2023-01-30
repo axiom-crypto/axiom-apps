@@ -1,0 +1,4 @@
+(function() {var implementors = {
+"axiom_account_age":[["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.152/serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> for <a class=\"struct\" href=\"axiom_account_age/struct.AppConfigParams.html\" title=\"struct axiom_account_age::AppConfigParams\">AppConfigParams</a>"]],
+"axiom_uniswap_twap":[["impl <a class=\"trait\" href=\"https://docs.rs/serde/1.0.152/serde/ser/trait.Serialize.html\" title=\"trait serde::ser::Serialize\">Serialize</a> for <a class=\"struct\" href=\"axiom_uniswap_twap/struct.AppConfigParams.html\" title=\"struct axiom_uniswap_twap::AppConfigParams\">AppConfigParams</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
