@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 #[cfg(feature = "display")]
 use ark_std::{end_timer, start_timer};
 use num_bigint::BigUint;

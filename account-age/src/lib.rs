@@ -64,7 +64,7 @@ impl AppConfigParams {
     pub fn get_account_age() -> Self {
         let path =
             var("ACCOUNT_AGE_CONFIG").unwrap_or_else(|_| "configs/account_age.json".to_string());
-        println!("{:?}", path);
+        // println!("{:?}", path);
         serde_json::from_reader(
             File::open(&path).unwrap_or_else(|e| panic!("{path} does not exist. {e:?}")),
         )
@@ -120,6 +120,7 @@ pub struct AccountAgeCircuit<F> {
     input: AccountAgeInput,
     instance: AccountAgeInstance,
     network: Network,
+    account_pf_max_depth: usize,
     _marker: PhantomData<F>,
 }
 
@@ -129,6 +130,7 @@ impl<F: Field> AccountAgeCircuit<F> {
         block_number: u32,
         address: Address,
         network: Network,
+        account_pf_max_depth: usize,
     ) -> Self {
         use axiom_eth::block_header::{
             GOERLI_BLOCK_HEADER_RLP_MAX_BYTES, MAINNET_BLOCK_HEADER_RLP_MAX_BYTES,
@@ -143,8 +145,8 @@ impl<F: Field> AccountAgeCircuit<F> {
                     block_number - i,
                     address,
                     vec![], // no slots
-                    8,      //acct_pf_max_depth,
-                    8,      //storage_pf_max_depth,
+                    account_pf_max_depth,
+                    8, //storage_pf_max_depth,
                 )
             })
             .rev()
@@ -178,7 +180,13 @@ impl<F: Field> AccountAgeCircuit<F> {
             addr: address,
         };
 
-        Self { input, instance, network, _marker: PhantomData }
+        Self {
+            input,
+            instance,
+            network,
+            account_pf_max_depth,
+            _marker: PhantomData,
+        }
     }
 
     pub fn to_instance(&self) -> Vec<F> {

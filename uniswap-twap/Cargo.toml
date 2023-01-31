@@ -20,7 +20,7 @@ num-traits = "0.2"
 axiom-eth = { git = "https://github.com/axiom-crypto/axiom-eth.git", tag = "v2023_01_30", features = ["halo2-axiom", "aggregation", "evm", "providers"], default-features = false }
 
 # halo2
-halo2_proofs = { git = "https://github.com/axiom-crypto/halo2.git", branch = "axiom/faster-witness-generation", package = "halo2_proofs" }
+halo2_proofs = { git = "https://github.com/axiom-crypto/halo2.git", tag = "v2023_01_17", package = "halo2_proofs" }
 halo2-base = { git = "https://github.com/axiom-crypto/halo2-lib.git", tag = "v0.2.2", features = ["halo2-axiom"], default-features = false }
 
 # crypto

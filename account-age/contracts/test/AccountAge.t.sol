@@ -14,7 +14,7 @@ contract AccountAgeTest is Test {
 
     function setUp() public {
         yulDeployer = new YulDeployer();
-        verifierAddress = address(yulDeployer.deployContract("mainnet"));
+        verifierAddress = address(yulDeployer.deployContract("mainnet_10"));
     }
 
     function testVerifyAgeFork() public {
@@ -24,7 +24,7 @@ contract AccountAgeTest is Test {
         // Import test proof and instance calldata
         string[] memory inputs = new string[](2);
         inputs[0] = "cat";
-        inputs[1] = "test/data/test.calldata";
+        inputs[1] = "test/data/test_10.calldata";
         bytes memory proof = vm.ffi(inputs);
 
         // Prepare witness data for account age proof.

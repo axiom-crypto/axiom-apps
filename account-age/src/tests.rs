@@ -24,7 +24,14 @@ fn get_test_circuit<F: Field>(network: Network) -> AccountAgeCircuit<F> {
             block_number = 0x304e9d;
         }
     }
-    AccountAgeCircuit::from_provider(&provider, block_number, addr, network)
+    const ACCOUNT_PROOF_MAX_DEPTH: usize = 10;
+    AccountAgeCircuit::from_provider(
+        &provider,
+        block_number,
+        addr,
+        network,
+        ACCOUNT_PROOF_MAX_DEPTH,
+    )
 }
 
 #[test]
@@ -59,17 +66,13 @@ pub fn test_evm_mainnet_account_age() {
         let circuit = get_test_circuit::<Fr>(Network::Mainnet);
         let params = gen_srs(k);
         let pk = gen_pk(&params, &circuit, Some(Path::new("data/account_age/pk_age_circuit.dat")));
-        gen_snark_shplonk(&params, &pk, circuit,  &mut rng, None::<&str>)
+        gen_snark_shplonk(&params, &pk, circuit, &mut rng, None::<&str>)
     };
 
     let k = load_verify_circuit_degree();
     let params = gen_srs(k);
-    let evm_circuit = PublicAggregationCircuit::new(
-        &params,
-        vec![account_age_snark],
-        false,
-        &mut rng,
-    );
+    let evm_circuit =
+        PublicAggregationCircuit::new(&params, vec![account_age_snark], false, &mut rng);
     let pk = gen_pk(&params, &evm_circuit, Some(Path::new("data/account_age/pk_evm_circuit.dat")));
 
     let instances = evm_circuit.instances();
