@@ -3,7 +3,7 @@ use axiom_eth::providers::{GOERLI_PROVIDER_URL, MAINNET_PROVIDER_URL};
 use halo2_base::halo2_proofs::{dev::MockProver, halo2curves::bn256::Fr};
 
 fn get_test_circuit<F: Field>(network: Network) -> AccountAgeCircuit<F> {
-    let infura_id = std::fs::read_to_string("configs/INFURA_ID").expect("Infura ID not found");
+    let infura_id = std::env::var("INFURA_ID").expect("INFURA_ID environmental variable not found");
     let provider_url = match network {
         Network::Mainnet => format!("{MAINNET_PROVIDER_URL}{infura_id}"),
         Network::Goerli => format!("{GOERLI_PROVIDER_URL}{infura_id}"),

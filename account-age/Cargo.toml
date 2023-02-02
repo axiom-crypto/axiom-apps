@@ -31,3 +31,7 @@ snark-verifier-sdk = { git = "https://github.com/axiom-crypto/snark-verifier.git
 
 # generating circuit inputs from blockchain
 ethers-providers = { version = "1.0.2" }  
+
+[features]
+default = ["display"]
+display = ["axiom-eth/display", "dep:ark-std"]
