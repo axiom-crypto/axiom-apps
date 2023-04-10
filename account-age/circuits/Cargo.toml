@@ -1,0 +1,39 @@
+[package]
+name = "axiom-account-age"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "account_age_server"
+required-features = ["server"]
+
+[dependencies]
+log = "0.4"
+env_logger = "0.10"
+itertools = "0.10"
+lazy_static = "1.4.0"
+rand = "0.8"
+rand_chacha = "0.3.1"
+clap = { version = "4.1", features = ["derive"] }
+clap-num = "1.0.2"
+
+axiom-scaffold = { git = "https://github.com/axiom-crypto/axiom-scaffold.git", branch = "develop", default-features = false }
+
+# crypto
+ethers-core = { version = "2.0.2" }
+# generating circuit inputs from blockchain
+ethers-providers = { version = "2.0.2" }  
+
+# server
+serde = { version = "1.0", default-features = false, features = ["derive"], optional = true }
+rocket = { version = "0.4", optional = true }
+rocket_contrib = { version = "0.4", optional = true, default-features = false, features = ["json"]}
+
+[dev-dependencies]
+test-log = "0.2.11"
+ark-std = { version = "0.3.0", features = ["print-trace"] }
+
+[features]
+default = ["axiom-scaffold/display"]
+production = ["axiom-scaffold/production"]
+server = ["dep:rocket", "dep:rocket_contrib", "dep:serde", "production"]
