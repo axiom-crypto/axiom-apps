@@ -26,6 +26,8 @@ struct Cli {
     create_contract: bool,
     #[arg(long = "readonly")]
     readonly: bool,
+    #[arg(long = "srs-readonly")]
+    srs_readonly: bool,
     #[arg(short, long = "config-path")]
     config_path: Option<PathBuf>,
     #[arg(short, long = "data-path")]
@@ -35,13 +37,13 @@ struct Cli {
 fn main() {
     let args = Cli::parse();
     #[cfg(feature = "production")]
-    let production = true;
+    let srs_readonly = true;
     #[cfg(not(feature = "production"))]
-    let production = false;
+    let srs_readonly = args.srs_readonly;
 
     let scheduler = AccountAgeScheduler::new(
         args.network,
-        production,
+        srs_readonly,
         args.readonly,
         args.config_path.unwrap_or_else(|| PathBuf::from("configs")),
         args.data_path.unwrap_or_else(|| PathBuf::from("data")),
