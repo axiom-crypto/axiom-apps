@@ -20,7 +20,7 @@ clap-num = "1.0.2"
 num-bigint = "0.4.3"
 num-traits = "0.2.15"
 
-axiom-scaffold = { git = "https://github.com/axiom-crypto/axiom-scaffold.git", tag = "develop", default-features = false }
+axiom-scaffold = { git = "https://github.com/axiom-crypto/axiom-scaffold.git", branch = "develop", default-features = false }
 
 # crypto
 ethers-core = { version = "2.0.2" }
