@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "yul/YulDeployer.sol";
 
 import "../src/IAxiomV0.sol";
-import "../src/AccountAge.sol";
+import "../src/AccountAgeV02.sol";
 
 contract AccountAgeTest is Test {
     YulDeployer yulDeployer;
@@ -69,7 +69,7 @@ contract AccountAgeTest is Test {
             ]
         });
 
-        AccountAge accountAge = new AccountAge(AXIOM_ADDRESS, verifierAddress);
+        AccountAgeV02 accountAge = new AccountAgeV02(AXIOM_ADDRESS, verifierAddress);
         vm.resumeGasMetering();
 
         accountAge.verifyAge(prevBlock, currBlock, proof);

@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Test.sol";
 
 import "../src/IAxiomV0.sol";
-import "../src/Randao.sol";
+import "../src/RandaoV02.sol";
 
 contract RandaoTest is Test {
     address AXIOM_ADDRESS = 0x01d5b501C1fc0121e1411970fb79c322737025c2;
@@ -39,7 +39,7 @@ contract RandaoTest is Test {
         });
         uint256 prevRandao = 0xa97f47e048f1ddf11b7a8d2c265014cfcec2506d765a393406f6046960d059dc;
 
-        Randao randao = new Randao(AXIOM_ADDRESS);
+        RandaoV02 randao = new RandaoV02(AXIOM_ADDRESS);
         randao.verifyRandao(testBlock, proof);
         require(randao.prevRandaos(testBlock.blockNumber) == prevRandao, "prevRandao not verified");
     }
@@ -74,7 +74,7 @@ contract RandaoTest is Test {
         });
         uint256 prevRandao = 0xa97f47e048f1ddf11b7a8d2c265014cfcec2506d765a393406f6046960d059dc;
 
-        Randao randao = new Randao(AXIOM_ADDRESS);
+        RandaoV02 randao = new RandaoV02(AXIOM_ADDRESS);
         randao.verifyRandao(testBlock, headerRlp);
         require(randao.prevRandaos(testBlock.blockNumber) == prevRandao, "prevRandao not verified");
     }

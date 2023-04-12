@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import "yul/YulDeployer.sol";
 
 import "../src/IAxiomV0.sol";
-import "../src/UniswapV2Twap.sol";
+import "../src/UniswapV2TwapV02.sol";
 
 contract UniswapTwapTest is Test {
     YulDeployer yulDeployer;
@@ -69,7 +69,7 @@ contract UniswapTwapTest is Test {
         // twapPri in uq112x112 format, test value computed independently
         uint256 twapPri = 0x0808c0a9c0c9a101710144;
 
-        UniswapV2Twap uniswap = new UniswapV2Twap(AXIOM_ADDRESS, verifierAddress);
+        UniswapV2TwapV02 uniswap = new UniswapV2TwapV02(AXIOM_ADDRESS, verifierAddress);
         vm.resumeGasMetering();
         uniswap.verifyUniswapV2Twap(startBlock, endBlock, proof);
         require(
@@ -137,7 +137,7 @@ contract UniswapTwapTest is Test {
         // twapPri in uq112x112 format, test value computed independently
         uint256 twapPri = 0x080d2df15f4bab9714ca2f;
 
-        UniswapV2Twap uniswap = new UniswapV2Twap(AXIOM_ADDRESS, verifierAddress);
+        UniswapV2TwapV02 uniswap = new UniswapV2TwapV02(AXIOM_ADDRESS, verifierAddress);
         vm.resumeGasMetering();
 
         uniswap.verifyUniswapV2Twap(startBlock, endBlock, proof);

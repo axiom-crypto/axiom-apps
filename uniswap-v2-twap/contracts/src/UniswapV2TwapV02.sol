@@ -5,10 +5,10 @@ pragma solidity ^0.8.12;
 
 import {IAxiomV0} from "./IAxiomV0.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
-import {IUniswapV2Twap} from "./IUniswapV2Twap.sol";
+import {IUniswapV2TwapV0} from "./IUniswapV2TwapV0.sol";
 
-contract UniswapV2Twap is Ownable, IUniswapV2Twap {
-    uint256 public constant VERSION = 1;
+contract UniswapV2TwapV02 is Ownable, IUniswapV2TwapV0 {
+    string public constant VERSION = "0.2";
 
     address public axiomAddress;
     address public verifierAddress;

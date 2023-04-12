@@ -5,7 +5,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import {IAxiomV0} from "./IAxiomV0.sol";
 
-interface IUniswapV2Twap {
+interface IUniswapV2TwapV0 {
     /// @notice Mapping between abi.encodePacked(address poolAddress, uint32 startBlockNumber, uint32 endBlockNumber) => twapPri (uint256)
     function twapPris(bytes28) external view returns (uint256);
 

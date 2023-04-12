@@ -7,7 +7,9 @@ import "./lib/RLPReader.sol";
 import {IAxiomV0} from "./IAxiomV0.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-contract Randao is Ownable {
+contract RandaoV02 is Ownable {
+    string public constant VERSION = "0.2";
+
     using RLPReader for RLPReader.RLPItem;
     using RLPReader for bytes;
 

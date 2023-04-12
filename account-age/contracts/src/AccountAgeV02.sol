@@ -7,8 +7,8 @@ import {IAxiomV0} from "./IAxiomV0.sol";
 import {IAccountAge} from "./IAccountAge.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
-contract AccountAge is Ownable, IAccountAge {
-    uint256 public constant VERSION = 1;
+contract AccountAgeV02 is Ownable, IAccountAge {
+    string public constant VERSION = "0.2";
 
     address public axiomAddress;
     address public verifierAddress;
