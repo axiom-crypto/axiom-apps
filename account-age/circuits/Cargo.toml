@@ -17,7 +17,7 @@ rand_chacha = "0.3.1"
 clap = { version = "4.1", features = ["derive"] }
 clap-num = "1.0.2"
 
-axiom-scaffold = { git = "https://github.com/axiom-crypto/axiom-scaffold.git", branch = "develop", default-features = false }
+axiom-scaffold = { git = "https://github.com/axiom-crypto/axiom-scaffold.git", tag = "v2023_04_12", default-features = false }
 
 # crypto
 ethers-core = { version = "2.0.2" }
