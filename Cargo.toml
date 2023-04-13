@@ -1,7 +1,8 @@
 [workspace]
 members = [
-    "account-age",
-    "uniswap-twap",
+    "account-age/circuits",
+    "uniswap-v2-twap/circuits",
+    "uniswap-v3-oracles/circuits",
 ]
 
 [profile.dev]
