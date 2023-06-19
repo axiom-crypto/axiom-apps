@@ -9,3 +9,6 @@
 [submodule "uniswap-v3-oracles"]
 	path = uniswap-v3-oracles
 	url = https://github.com/axiom-crypto/uniswap-v3-oracles.git
+[submodule "lib/axiom-contracts"]
+	path = lib/axiom-contracts
+	url = https://github.com/axiom-crypto/axiom-contracts
