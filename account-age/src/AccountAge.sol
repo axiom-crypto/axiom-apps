@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import {IAxiomV1Query} from "./IAxiomV1Query.sol";
+import {IAxiomV1Query} from "axiom-contracts/contracts/interfaces/IAxiomV1Query.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
 contract AccountAge is Ownable {
