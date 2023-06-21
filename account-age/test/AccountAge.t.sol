@@ -24,16 +24,10 @@ contract AccountAgeTest is Test {
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/test/data/input.json");
         string memory json = vm.readFile(path);
-
-        IAxiomV1Query.AccountResponse memory currBlock = ReadQueryData.readAccountResponse(stdJson.parseRaw(json, ".currBlock"));
-        IAxiomV1Query.AccountResponse memory prevBlock = ReadQueryData.readAccountResponse(stdJson.parseRaw(json, ".prevBlock"));
-        bytes32[3] memory keccakResponses = ReadQueryData.readKeccakResponses(stdJson.parseRaw(json, ".keccakResponses"));
         
-        IAxiomV1Query.AccountResponse[] memory accountProofs = new IAxiomV1Query.AccountResponse[](2);
-        accountProofs[0] = prevBlock;
-        accountProofs[1] = currBlock;
+        ReadQueryData.QueryResponse memory qr = ReadQueryData.readQueryResponses(json);
 
-        return (accountProofs, keccakResponses);
+        return (qr.accountResponses, qr.keccakResponses);
     }
 
     function testCheckAccountAge() public {

@@ -1,0 +1,821 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "pairAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "startBlockNumber",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "endBlockNumber",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "twapPri",
+          "type": "uint256"
+        }
+      ],
+      "name": "UniswapV2TwapProof",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes28",
+          "name": "",
+          "type": "bytes28"
+        }
+      ],
+      "name": "twapPris",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "blockNumber",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "claimedBlockHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "prevHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "numFinal",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32[10]",
+              "name": "merkleProof",
+              "type": "bytes32[10]"
+            }
+          ],
+          "internalType": "struct IAxiomV0.BlockHashWitness",
+          "name": "startBlock",
+          "type": "tuple"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "blockNumber",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "claimedBlockHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "prevHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "numFinal",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32[10]",
+              "name": "merkleProof",
+              "type": "bytes32[10]"
+            }
+          ],
+          "internalType": "struct IAxiomV0.BlockHashWitness",
+          "name": "endBlock",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes",
+          "name": "proof",
+          "type": "bytes"
+        }
+      ],
+      "name": "verifyUniswapV2Twap",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "twapPri",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "twapPris(bytes28)": "bdd1b118",
+    "verifyUniswapV2Twap((uint32,bytes32,bytes32,uint32,bytes32[10]),(uint32,bytes32,bytes32,uint32,bytes32[10]),bytes)": "accede1f"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pairAddress\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint32\",\"name\":\"startBlockNumber\",\"type\":\"uint32\"},{\"indexed\":false,\"internalType\":\"uint32\",\"name\":\"endBlockNumber\",\"type\":\"uint32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"twapPri\",\"type\":\"uint256\"}],\"name\":\"UniswapV2TwapProof\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"bytes28\",\"name\":\"\",\"type\":\"bytes28\"}],\"name\":\"twapPris\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint32\",\"name\":\"blockNumber\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"claimedBlockHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"prevHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint32\",\"name\":\"numFinal\",\"type\":\"uint32\"},{\"internalType\":\"bytes32[10]\",\"name\":\"merkleProof\",\"type\":\"bytes32[10]\"}],\"internalType\":\"struct IAxiomV0.BlockHashWitness\",\"name\":\"startBlock\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint32\",\"name\":\"blockNumber\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"claimedBlockHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"prevHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint32\",\"name\":\"numFinal\",\"type\":\"uint32\"},{\"internalType\":\"bytes32[10]\",\"name\":\"merkleProof\",\"type\":\"bytes32[10]\"}],\"internalType\":\"struct IAxiomV0.BlockHashWitness\",\"name\":\"endBlock\",\"type\":\"tuple\"},{\"internalType\":\"bytes\",\"name\":\"proof\",\"type\":\"bytes\"}],\"name\":\"verifyUniswapV2Twap\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"twapPri\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"twapPris(bytes28)\":{\"notice\":\"Mapping between abi.encodePacked(address poolAddress, uint32 startBlockNumber, uint32 endBlockNumber) => twapPri (uint256)\"},\"verifyUniswapV2Twap((uint32,bytes32,bytes32,uint32,bytes32[10]),(uint32,bytes32,bytes32,uint32,bytes32[10]),bytes)\":{\"notice\":\"Verify a ZK proof of a Uniswap V2 TWAP computation and verifies the validity of checkpoint blockhashes using Axiom.         Caches the TWAP price value for future use.         Returns the time (seconds) weighted average price (arithmetic mean)\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/IUniswapV2TwapV0.sol\":\"IUniswapV2TwapV0\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts/contracts/\",\":axiom-contracts/=../lib/axiom-contracts/\",\":ds-test/=../lib/forge-std/lib/ds-test/src/\",\":forge-std/=../lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=../lib/openzeppelin-contracts/contracts/\",\":utils/=../lib/utils/\",\":yul/=../lib/yul/\"],\"viaIR\":true},\"sources\":{\"src/IAxiomV0.sol\":{\"keccak256\":\"0x5760c76372beb7b65b9be10f884822bd735664170fcf588a9852494c362bc957\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://84becfda8e16b90f8fbf03376ce510101aed968dd5aab8e7107315c6aca353a9\",\"dweb:/ipfs/QmZJAb34iQ3u4XiQo2fbdm8uq9a9NjrBn4P1R6veJUyaha\"]},\"src/IUniswapV2TwapV0.sol\":{\"keccak256\":\"0x6105573848c892659a4f8ac82d530743cf2defc93e1f3b24b0572fcae03e4832\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://18104365d838b43e05b85a7e85f0ca800f40e703485fad64055830ee1e3a94cd\",\"dweb:/ipfs/QmfXBPXiar7DUKspjp2LPyMLj7jWvXjJa2LjH13X15sUix\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.19+commit.7dd6d404"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pairAddress",
+              "type": "address",
+              "indexed": false
+            },
+            {
+              "internalType": "uint32",
+              "name": "startBlockNumber",
+              "type": "uint32",
+              "indexed": false
+            },
+            {
+              "internalType": "uint32",
+              "name": "endBlockNumber",
+              "type": "uint32",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "twapPri",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "UniswapV2TwapProof",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes28",
+              "name": "",
+              "type": "bytes28"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "twapPris",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "struct IAxiomV0.BlockHashWitness",
+              "name": "startBlock",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "blockNumber",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "claimedBlockHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "prevHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "numFinal",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32[10]",
+                  "name": "merkleProof",
+                  "type": "bytes32[10]"
+                }
+              ]
+            },
+            {
+              "internalType": "struct IAxiomV0.BlockHashWitness",
+              "name": "endBlock",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "blockNumber",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "claimedBlockHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "prevHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "numFinal",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32[10]",
+                  "name": "merkleProof",
+                  "type": "bytes32[10]"
+                }
+              ]
+            },
+            {
+              "internalType": "bytes",
+              "name": "proof",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "verifyUniswapV2Twap",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "twapPri",
+              "type": "uint256"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "twapPris(bytes28)": {
+            "notice": "Mapping between abi.encodePacked(address poolAddress, uint32 startBlockNumber, uint32 endBlockNumber) => twapPri (uint256)"
+          },
+          "verifyUniswapV2Twap((uint32,bytes32,bytes32,uint32,bytes32[10]),(uint32,bytes32,bytes32,uint32,bytes32[10]),bytes)": {
+            "notice": "Verify a ZK proof of a Uniswap V2 TWAP computation and verifies the validity of checkpoint blockhashes using Axiom.         Caches the TWAP price value for future use.         Returns the time (seconds) weighted average price (arithmetic mean)"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts/contracts/",
+        ":axiom-contracts/=../lib/axiom-contracts/",
+        ":ds-test/=../lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=../lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/",
+        ":openzeppelin-contracts/=../lib/openzeppelin-contracts/contracts/",
+        ":utils/=../lib/utils/",
+        ":yul/=../lib/yul/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/IUniswapV2TwapV0.sol": "IUniswapV2TwapV0"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "src/IAxiomV0.sol": {
+        "keccak256": "0x5760c76372beb7b65b9be10f884822bd735664170fcf588a9852494c362bc957",
+        "urls": [
+          "bzz-raw://84becfda8e16b90f8fbf03376ce510101aed968dd5aab8e7107315c6aca353a9",
+          "dweb:/ipfs/QmZJAb34iQ3u4XiQo2fbdm8uq9a9NjrBn4P1R6veJUyaha"
+        ],
+        "license": "MIT"
+      },
+      "src/IUniswapV2TwapV0.sol": {
+        "keccak256": "0x6105573848c892659a4f8ac82d530743cf2defc93e1f3b24b0572fcae03e4832",
+        "urls": [
+          "bzz-raw://18104365d838b43e05b85a7e85f0ca800f40e703485fad64055830ee1e3a94cd",
+          "dweb:/ipfs/QmfXBPXiar7DUKspjp2LPyMLj7jWvXjJa2LjH13X15sUix"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/IUniswapV2TwapV0.sol",
+    "id": 38100,
+    "exportedSymbols": {
+      "IAxiomV0": [
+        37743
+      ],
+      "IUniswapV2TwapV0": [
+        38099
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "168:916:41",
+    "nodes": [
+      {
+        "id": 38064,
+        "nodeType": "PragmaDirective",
+        "src": "168:31:41",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0",
+          "<",
+          "0.9",
+          ".0"
+        ]
+      },
+      {
+        "id": 38066,
+        "nodeType": "ImportDirective",
+        "src": "201:40:41",
+        "nodes": [],
+        "absolutePath": "src/IAxiomV0.sol",
+        "file": "./IAxiomV0.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 38100,
+        "sourceUnit": 37744,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 38065,
+              "name": "IAxiomV0",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 37743,
+              "src": "209:8:41",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 38099,
+        "nodeType": "ContractDefinition",
+        "src": "243:840:41",
+        "nodes": [
+          {
+            "id": 38074,
+            "nodeType": "FunctionDefinition",
+            "src": "415:59:41",
+            "nodes": [],
+            "documentation": {
+              "id": 38067,
+              "nodeType": "StructuredDocumentation",
+              "src": "276:134:41",
+              "text": "@notice Mapping between abi.encodePacked(address poolAddress, uint32 startBlockNumber, uint32 endBlockNumber) => twapPri (uint256)"
+            },
+            "functionSelector": "bdd1b118",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "twapPris",
+            "nameLocation": "424:8:41",
+            "parameters": {
+              "id": 38070,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38069,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38074,
+                  "src": "433:7:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes28",
+                    "typeString": "bytes28"
+                  },
+                  "typeName": {
+                    "id": 38068,
+                    "name": "bytes28",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "433:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes28",
+                      "typeString": "bytes28"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "432:9:41"
+            },
+            "returnParameters": {
+              "id": 38073,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38072,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38074,
+                  "src": "465:7:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 38071,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "465:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "464:9:41"
+            },
+            "scope": 38099,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 38084,
+            "nodeType": "EventDefinition",
+            "src": "480:111:41",
+            "nodes": [],
+            "anonymous": false,
+            "eventSelector": "25684e2429888ffe4bab7bb1312633fabe39dc212f7a0399a0534d1b95b030eb",
+            "name": "UniswapV2TwapProof",
+            "nameLocation": "486:18:41",
+            "parameters": {
+              "id": 38083,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38076,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "pairAddress",
+                  "nameLocation": "513:11:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38084,
+                  "src": "505:19:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 38075,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "505:7:41",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 38078,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "startBlockNumber",
+                  "nameLocation": "533:16:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38084,
+                  "src": "526:23:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 38077,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "526:6:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 38080,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "endBlockNumber",
+                  "nameLocation": "558:14:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38084,
+                  "src": "551:21:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 38079,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "551:6:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 38082,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "twapPri",
+                  "nameLocation": "582:7:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38084,
+                  "src": "574:15:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 38081,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "574:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "504:86:41"
+            }
+          },
+          {
+            "id": 38098,
+            "nodeType": "FunctionDefinition",
+            "src": "873:208:41",
+            "nodes": [],
+            "documentation": {
+              "id": 38085,
+              "nodeType": "StructuredDocumentation",
+              "src": "597:271:41",
+              "text": "@notice Verify a ZK proof of a Uniswap V2 TWAP computation and verifies the validity of checkpoint blockhashes using Axiom.\n         Caches the TWAP price value for future use.\n         Returns the time (seconds) weighted average price (arithmetic mean)"
+            },
+            "functionSelector": "accede1f",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "verifyUniswapV2Twap",
+            "nameLocation": "882:19:41",
+            "parameters": {
+              "id": 38094,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38088,
+                  "mutability": "mutable",
+                  "name": "startBlock",
+                  "nameLocation": "946:10:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38098,
+                  "src": "911:45:41",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_BlockHashWitness_$37685_calldata_ptr",
+                    "typeString": "struct IAxiomV0.BlockHashWitness"
+                  },
+                  "typeName": {
+                    "id": 38087,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 38086,
+                      "name": "IAxiomV0.BlockHashWitness",
+                      "nameLocations": [
+                        "911:8:41",
+                        "920:16:41"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 37685,
+                      "src": "911:25:41"
+                    },
+                    "referencedDeclaration": 37685,
+                    "src": "911:25:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_BlockHashWitness_$37685_storage_ptr",
+                      "typeString": "struct IAxiomV0.BlockHashWitness"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 38091,
+                  "mutability": "mutable",
+                  "name": "endBlock",
+                  "nameLocation": "1001:8:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38098,
+                  "src": "966:43:41",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_BlockHashWitness_$37685_calldata_ptr",
+                    "typeString": "struct IAxiomV0.BlockHashWitness"
+                  },
+                  "typeName": {
+                    "id": 38090,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 38089,
+                      "name": "IAxiomV0.BlockHashWitness",
+                      "nameLocations": [
+                        "966:8:41",
+                        "975:16:41"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 37685,
+                      "src": "966:25:41"
+                    },
+                    "referencedDeclaration": 37685,
+                    "src": "966:25:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_BlockHashWitness_$37685_storage_ptr",
+                      "typeString": "struct IAxiomV0.BlockHashWitness"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 38093,
+                  "mutability": "mutable",
+                  "name": "proof",
+                  "nameLocation": "1034:5:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38098,
+                  "src": "1019:20:41",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 38092,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1019:5:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "901:144:41"
+            },
+            "returnParameters": {
+              "id": 38097,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 38096,
+                  "mutability": "mutable",
+                  "name": "twapPri",
+                  "nameLocation": "1072:7:41",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 38098,
+                  "src": "1064:15:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 38095,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1064:7:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1063:17:41"
+            },
+            "scope": 38099,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IUniswapV2TwapV0",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          38099
+        ],
+        "name": "IUniswapV2TwapV0",
+        "nameLocation": "253:16:41",
+        "scope": 38100,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 41
+}

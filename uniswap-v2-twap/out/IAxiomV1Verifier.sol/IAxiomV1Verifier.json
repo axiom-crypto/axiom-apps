@@ -1,0 +1,971 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint32",
+              "name": "blockNumber",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "claimedBlockHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "prevHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "numFinal",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32[10]",
+              "name": "merkleProof",
+              "type": "bytes32[10]"
+            }
+          ],
+          "internalType": "struct IAxiomV1Verifier.BlockHashWitness",
+          "name": "witness",
+          "type": "tuple"
+        }
+      ],
+      "name": "isBlockHashValid",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint32",
+          "name": "blockNumber",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "claimedBlockHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "isRecentBlockHashValid",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "mmr",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "uint8",
+          "name": "bufferId",
+          "type": "uint8"
+        },
+        {
+          "internalType": "uint32",
+          "name": "blockNumber",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "claimedBlockHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32[]",
+          "name": "merkleProof",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "mmrVerifyBlockHash",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "isBlockHashValid((uint32,bytes32,bytes32,uint32,bytes32[10]))": "6f193b83",
+    "isRecentBlockHashValid(uint32,bytes32)": "c1f7cae2",
+    "mmrVerifyBlockHash(bytes32[],uint8,uint32,bytes32,bytes32[])": "89ea365d"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"components\":[{\"internalType\":\"uint32\",\"name\":\"blockNumber\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"claimedBlockHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"prevHash\",\"type\":\"bytes32\"},{\"internalType\":\"uint32\",\"name\":\"numFinal\",\"type\":\"uint32\"},{\"internalType\":\"bytes32[10]\",\"name\":\"merkleProof\",\"type\":\"bytes32[10]\"}],\"internalType\":\"struct IAxiomV1Verifier.BlockHashWitness\",\"name\":\"witness\",\"type\":\"tuple\"}],\"name\":\"isBlockHashValid\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint32\",\"name\":\"blockNumber\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"claimedBlockHash\",\"type\":\"bytes32\"}],\"name\":\"isRecentBlockHashValid\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"mmr\",\"type\":\"bytes32[]\"},{\"internalType\":\"uint8\",\"name\":\"bufferId\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"blockNumber\",\"type\":\"uint32\"},{\"internalType\":\"bytes32\",\"name\":\"claimedBlockHash\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32[]\",\"name\":\"merkleProof\",\"type\":\"bytes32[]\"}],\"name\":\"mmrVerifyBlockHash\",\"outputs\":[],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"isBlockHashValid((uint32,bytes32,bytes32,uint32,bytes32[10]))\":{\"details\":\"For block numbers within the last 256, use #isRecentBlockHashValid instead.\",\"params\":{\"witness\":\"The block hash to verify and the Merkle proof to verify it         witness.blockNumber is the block number to verify         witness.claimedBlockHash is the claimed blockhash of block witness.blockNumber         witness.prevHash is the prevHash stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)         witness.numFinal is the numFinal stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)         witness.merkleProof is the Merkle inclusion proof of witness.claimedBlockHash to the root stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)         witness.merkleProof[i] is the sibling of the Merkle node at depth 10 - i, for i = 0, ..., 10\"}},\"isRecentBlockHashValid(uint32,bytes32)\":{\"params\":{\"blockNumber\":\"The block number to verify\",\"claimedBlockHash\":\"The claimed blockhash of block blockNumber\"}},\"mmrVerifyBlockHash(bytes32[],uint8,uint32,bytes32,bytes32[])\":{\"details\":\"Use event logs to determine the correct bufferId and get the MMR at that index in the ring buffer.\",\"params\":{\"blockNumber\":\"The block number to verify\",\"bufferId\":\"The index in the ring buffer of #mmrRingBuffer\",\"claimedBlockHash\":\"The claimed blockhash of block blockNumber\",\"merkleProof\":\"The Merkle inclusion proof of claimedBlockHash to the corresponding peak in mmr. The correct peak is calculated from mmr.length and blockNumber.\",\"mmr\":\"The Merkle mountain range commited to in #mmrRingBuffer(bufferId), must be correct length\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"isBlockHashValid((uint32,bytes32,bytes32,uint32,bytes32[10]))\":{\"notice\":\"Verify the blockhash of block witness.blockNumber equals witness.claimedBlockHash by checking against Axiom's cache of #historicalRoots.\"},\"isRecentBlockHashValid(uint32,bytes32)\":{\"notice\":\"Verify the blockhash of block blockNumber equals claimedBlockHash. Assumes that blockNumber is within the last 256 most recent blocks.\"},\"mmrVerifyBlockHash(bytes32[],uint8,uint32,bytes32,bytes32[])\":{\"notice\":\"Verify the blockhash of block blockNumber equals claimedBlockHash by checking against Axiom's cache of historical Merkle mountain ranges in #mmrRingBuffer.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/interfaces/core/IAxiomV1Verifier.sol\":\"IAxiomV1Verifier\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts/contracts/\",\":axiom-contracts/=../lib/axiom-contracts/\",\":ds-test/=../lib/forge-std/lib/ds-test/src/\",\":forge-std/=../lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=../lib/openzeppelin-contracts/contracts/\",\":utils/=../lib/utils/\",\":yul/=../lib/yul/\"],\"viaIR\":true},\"sources\":{\"/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/interfaces/core/IAxiomV1Verifier.sol\":{\"keccak256\":\"0x392e9b7df6c06969f1b4d1c03ece5a2e156862906f1f39b47ffdf67343c7f37c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2001bb6c42dc4980a9ea98d3d87de89b195e3003ed4595b748da4da4be05ac2b\",\"dweb:/ipfs/QmVFYZ2nTafjPpKznMAnU1wU2fVqK9iFhUvANr5D2bdGVB\"]},\"/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/libraries/configuration/AxiomV1Configuration.sol\":{\"keccak256\":\"0xd9e83e38133bc603411cfa16b2f16a723708dc36b248554edbc63049b38ce872\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2b4c40c291dd441e4777509ba0756ce73b7f4f06df7307d2477256523dce7a11\",\"dweb:/ipfs/QmT4Vi4EvMiE1rHQobPbodizjY6Qj9hQ3WNf8ocNDZE3Lx\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.19+commit.7dd6d404"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "struct IAxiomV1Verifier.BlockHashWitness",
+              "name": "witness",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "blockNumber",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "claimedBlockHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "prevHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "numFinal",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32[10]",
+                  "name": "merkleProof",
+                  "type": "bytes32[10]"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "isBlockHashValid",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "blockNumber",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "claimedBlockHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "isRecentBlockHashValid",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "mmr",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "uint8",
+              "name": "bufferId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint32",
+              "name": "blockNumber",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "claimedBlockHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "merkleProof",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "mmrVerifyBlockHash"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "isBlockHashValid((uint32,bytes32,bytes32,uint32,bytes32[10]))": {
+            "details": "For block numbers within the last 256, use #isRecentBlockHashValid instead.",
+            "params": {
+              "witness": "The block hash to verify and the Merkle proof to verify it         witness.blockNumber is the block number to verify         witness.claimedBlockHash is the claimed blockhash of block witness.blockNumber         witness.prevHash is the prevHash stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)         witness.numFinal is the numFinal stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)         witness.merkleProof is the Merkle inclusion proof of witness.claimedBlockHash to the root stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)         witness.merkleProof[i] is the sibling of the Merkle node at depth 10 - i, for i = 0, ..., 10"
+            }
+          },
+          "isRecentBlockHashValid(uint32,bytes32)": {
+            "params": {
+              "blockNumber": "The block number to verify",
+              "claimedBlockHash": "The claimed blockhash of block blockNumber"
+            }
+          },
+          "mmrVerifyBlockHash(bytes32[],uint8,uint32,bytes32,bytes32[])": {
+            "details": "Use event logs to determine the correct bufferId and get the MMR at that index in the ring buffer.",
+            "params": {
+              "blockNumber": "The block number to verify",
+              "bufferId": "The index in the ring buffer of #mmrRingBuffer",
+              "claimedBlockHash": "The claimed blockhash of block blockNumber",
+              "merkleProof": "The Merkle inclusion proof of claimedBlockHash to the corresponding peak in mmr. The correct peak is calculated from mmr.length and blockNumber.",
+              "mmr": "The Merkle mountain range commited to in #mmrRingBuffer(bufferId), must be correct length"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "isBlockHashValid((uint32,bytes32,bytes32,uint32,bytes32[10]))": {
+            "notice": "Verify the blockhash of block witness.blockNumber equals witness.claimedBlockHash by checking against Axiom's cache of #historicalRoots."
+          },
+          "isRecentBlockHashValid(uint32,bytes32)": {
+            "notice": "Verify the blockhash of block blockNumber equals claimedBlockHash. Assumes that blockNumber is within the last 256 most recent blocks."
+          },
+          "mmrVerifyBlockHash(bytes32[],uint8,uint32,bytes32,bytes32[])": {
+            "notice": "Verify the blockhash of block blockNumber equals claimedBlockHash by checking against Axiom's cache of historical Merkle mountain ranges in #mmrRingBuffer."
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@openzeppelin/contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/contracts/",
+        ":@openzeppelin/contracts/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts/contracts/",
+        ":axiom-contracts/=../lib/axiom-contracts/",
+        ":ds-test/=../lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=../lib/forge-std/src/",
+        ":openzeppelin-contracts-upgradeable/=/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/lib/openzeppelin-contracts-upgradeable/",
+        ":openzeppelin-contracts/=../lib/openzeppelin-contracts/contracts/",
+        ":utils/=../lib/utils/",
+        ":yul/=../lib/yul/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/interfaces/core/IAxiomV1Verifier.sol": "IAxiomV1Verifier"
+      },
+      "libraries": {},
+      "viaIR": true
+    },
+    "sources": {
+      "/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/interfaces/core/IAxiomV1Verifier.sol": {
+        "keccak256": "0x392e9b7df6c06969f1b4d1c03ece5a2e156862906f1f39b47ffdf67343c7f37c",
+        "urls": [
+          "bzz-raw://2001bb6c42dc4980a9ea98d3d87de89b195e3003ed4595b748da4da4be05ac2b",
+          "dweb:/ipfs/QmVFYZ2nTafjPpKznMAnU1wU2fVqK9iFhUvANr5D2bdGVB"
+        ],
+        "license": "MIT"
+      },
+      "/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/libraries/configuration/AxiomV1Configuration.sol": {
+        "keccak256": "0xd9e83e38133bc603411cfa16b2f16a723708dc36b248554edbc63049b38ce872",
+        "urls": [
+          "bzz-raw://2b4c40c291dd441e4777509ba0756ce73b7f4f06df7307d2477256523dce7a11",
+          "dweb:/ipfs/QmT4Vi4EvMiE1rHQobPbodizjY6Qj9hQ3WNf8ocNDZE3Lx"
+        ],
+        "license": "MIT"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/interfaces/core/IAxiomV1Verifier.sol",
+    "id": 12781,
+    "exportedSymbols": {
+      "BLOCK_BATCH_DEPTH": [
+        12788
+      ],
+      "IAxiomV1Verifier": [
+        12780
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:2987:23",
+    "nodes": [
+      {
+        "id": 12729,
+        "nodeType": "PragmaDirective",
+        "src": "32:23:23",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "0.8",
+          ".19"
+        ]
+      },
+      {
+        "id": 12731,
+        "nodeType": "ImportDirective",
+        "src": "57:89:23",
+        "nodes": [],
+        "absolutePath": "/Users/roshan/axiom/axiom-apps/lib/axiom-contracts/contracts/libraries/configuration/AxiomV1Configuration.sol",
+        "file": "../../libraries/configuration/AxiomV1Configuration.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 12781,
+        "sourceUnit": 12994,
+        "symbolAliases": [
+          {
+            "foreign": {
+              "id": 12730,
+              "name": "BLOCK_BATCH_DEPTH",
+              "nodeType": "Identifier",
+              "overloadedDeclarations": [],
+              "referencedDeclaration": 12788,
+              "src": "65:17:23",
+              "typeDescriptions": {}
+            },
+            "nameLocation": "-1:-1:-1"
+          }
+        ],
+        "unitAlias": ""
+      },
+      {
+        "id": 12780,
+        "nodeType": "ContractDefinition",
+        "src": "148:2870:23",
+        "nodes": [
+          {
+            "id": 12744,
+            "nodeType": "StructDefinition",
+            "src": "315:192:23",
+            "nodes": [],
+            "canonicalName": "IAxiomV1Verifier.BlockHashWitness",
+            "members": [
+              {
+                "constant": false,
+                "id": 12733,
+                "mutability": "mutable",
+                "name": "blockNumber",
+                "nameLocation": "356:11:23",
+                "nodeType": "VariableDeclaration",
+                "scope": 12744,
+                "src": "349:18:23",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 12732,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "349:6:23",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 12735,
+                "mutability": "mutable",
+                "name": "claimedBlockHash",
+                "nameLocation": "385:16:23",
+                "nodeType": "VariableDeclaration",
+                "scope": 12744,
+                "src": "377:24:23",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 12734,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "377:7:23",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 12737,
+                "mutability": "mutable",
+                "name": "prevHash",
+                "nameLocation": "419:8:23",
+                "nodeType": "VariableDeclaration",
+                "scope": 12744,
+                "src": "411:16:23",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 12736,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "411:7:23",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 12739,
+                "mutability": "mutable",
+                "name": "numFinal",
+                "nameLocation": "444:8:23",
+                "nodeType": "VariableDeclaration",
+                "scope": 12744,
+                "src": "437:15:23",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint32",
+                  "typeString": "uint32"
+                },
+                "typeName": {
+                  "id": 12738,
+                  "name": "uint32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "437:6:23",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 12743,
+                "mutability": "mutable",
+                "name": "merkleProof",
+                "nameLocation": "489:11:23",
+                "nodeType": "VariableDeclaration",
+                "scope": 12744,
+                "src": "462:38:23",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_bytes32_$10_storage_ptr",
+                  "typeString": "bytes32[10]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 12740,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "462:7:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "id": 12742,
+                  "length": {
+                    "id": 12741,
+                    "name": "BLOCK_BATCH_DEPTH",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 12788,
+                    "src": "470:17:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "nodeType": "ArrayTypeName",
+                  "src": "462:26:23",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$10_storage_ptr",
+                    "typeString": "bytes32[10]"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "BlockHashWitness",
+            "nameLocation": "322:16:23",
+            "scope": 12780,
+            "visibility": "public"
+          },
+          {
+            "id": 12754,
+            "nodeType": "FunctionDefinition",
+            "src": "795:107:23",
+            "nodes": [],
+            "documentation": {
+              "id": 12745,
+              "nodeType": "StructuredDocumentation",
+              "src": "513:277:23",
+              "text": "@notice Verify the blockhash of block blockNumber equals claimedBlockHash. Assumes that blockNumber is within the last 256 most recent blocks.\n @param  blockNumber The block number to verify\n @param  claimedBlockHash The claimed blockhash of block blockNumber"
+            },
+            "functionSelector": "c1f7cae2",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isRecentBlockHashValid",
+            "nameLocation": "804:22:23",
+            "parameters": {
+              "id": 12750,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12747,
+                  "mutability": "mutable",
+                  "name": "blockNumber",
+                  "nameLocation": "834:11:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12754,
+                  "src": "827:18:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 12746,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "827:6:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 12749,
+                  "mutability": "mutable",
+                  "name": "claimedBlockHash",
+                  "nameLocation": "855:16:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12754,
+                  "src": "847:24:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 12748,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "847:7:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "826:46:23"
+            },
+            "returnParameters": {
+              "id": 12753,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12752,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12754,
+                  "src": "896:4:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 12751,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "896:4:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "895:6:23"
+            },
+            "scope": 12780,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 12763,
+            "nodeType": "FunctionDefinition",
+            "src": "1941:90:23",
+            "nodes": [],
+            "documentation": {
+              "id": 12755,
+              "nodeType": "StructuredDocumentation",
+              "src": "908:1028:23",
+              "text": "@notice Verify the blockhash of block witness.blockNumber equals witness.claimedBlockHash by checking against Axiom's cache of #historicalRoots.\n @dev    For block numbers within the last 256, use #isRecentBlockHashValid instead.\n @param  witness The block hash to verify and the Merkle proof to verify it\n         witness.blockNumber is the block number to verify\n         witness.claimedBlockHash is the claimed blockhash of block witness.blockNumber\n         witness.prevHash is the prevHash stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)\n         witness.numFinal is the numFinal stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)\n         witness.merkleProof is the Merkle inclusion proof of witness.claimedBlockHash to the root stored in #historicalRoots(witness.blockNumber - witness.blockNumber % 1024)\n         witness.merkleProof[i] is the sibling of the Merkle node at depth 10 - i, for i = 0, ..., 10"
+            },
+            "functionSelector": "6f193b83",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isBlockHashValid",
+            "nameLocation": "1950:16:23",
+            "parameters": {
+              "id": 12759,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12758,
+                  "mutability": "mutable",
+                  "name": "witness",
+                  "nameLocation": "1993:7:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12763,
+                  "src": "1967:33:23",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_BlockHashWitness_$12744_calldata_ptr",
+                    "typeString": "struct IAxiomV1Verifier.BlockHashWitness"
+                  },
+                  "typeName": {
+                    "id": 12757,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 12756,
+                      "name": "BlockHashWitness",
+                      "nameLocations": [
+                        "1967:16:23"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 12744,
+                      "src": "1967:16:23"
+                    },
+                    "referencedDeclaration": 12744,
+                    "src": "1967:16:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_BlockHashWitness_$12744_storage_ptr",
+                      "typeString": "struct IAxiomV1Verifier.BlockHashWitness"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1966:35:23"
+            },
+            "returnParameters": {
+              "id": 12762,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12761,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12763,
+                  "src": "2025:4:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 12760,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2025:4:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2024:6:23"
+            },
+            "scope": 12780,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 12779,
+            "nodeType": "FunctionDefinition",
+            "src": "2810:206:23",
+            "nodes": [],
+            "documentation": {
+              "id": 12764,
+              "nodeType": "StructuredDocumentation",
+              "src": "2037:768:23",
+              "text": "@notice Verify the blockhash of block blockNumber equals claimedBlockHash by checking against Axiom's cache of historical Merkle mountain ranges in #mmrRingBuffer.\n @dev    Use event logs to determine the correct bufferId and get the MMR at that index in the ring buffer.\n @param  mmr The Merkle mountain range commited to in #mmrRingBuffer(bufferId), must be correct length\n @param  bufferId The index in the ring buffer of #mmrRingBuffer\n @param  blockNumber The block number to verify\n @param  claimedBlockHash The claimed blockhash of block blockNumber\n @param  merkleProof The Merkle inclusion proof of claimedBlockHash to the corresponding peak in mmr. The correct peak is calculated from mmr.length and blockNumber."
+            },
+            "functionSelector": "89ea365d",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "mmrVerifyBlockHash",
+            "nameLocation": "2819:18:23",
+            "parameters": {
+              "id": 12777,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 12767,
+                  "mutability": "mutable",
+                  "name": "mmr",
+                  "nameLocation": "2866:3:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12779,
+                  "src": "2847:22:23",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_calldata_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 12765,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "2847:7:23",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 12766,
+                    "nodeType": "ArrayTypeName",
+                    "src": "2847:9:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 12769,
+                  "mutability": "mutable",
+                  "name": "bufferId",
+                  "nameLocation": "2885:8:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12779,
+                  "src": "2879:14:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  },
+                  "typeName": {
+                    "id": 12768,
+                    "name": "uint8",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2879:5:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint8",
+                      "typeString": "uint8"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 12771,
+                  "mutability": "mutable",
+                  "name": "blockNumber",
+                  "nameLocation": "2910:11:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12779,
+                  "src": "2903:18:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint32",
+                    "typeString": "uint32"
+                  },
+                  "typeName": {
+                    "id": 12770,
+                    "name": "uint32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2903:6:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint32",
+                      "typeString": "uint32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 12773,
+                  "mutability": "mutable",
+                  "name": "claimedBlockHash",
+                  "nameLocation": "2939:16:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12779,
+                  "src": "2931:24:23",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 12772,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2931:7:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 12776,
+                  "mutability": "mutable",
+                  "name": "merkleProof",
+                  "nameLocation": "2984:11:23",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12779,
+                  "src": "2965:30:23",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_calldata_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 12774,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "2965:7:23",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 12775,
+                    "nodeType": "ArrayTypeName",
+                    "src": "2965:9:23",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2837:164:23"
+            },
+            "returnParameters": {
+              "id": 12778,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3015:0:23"
+            },
+            "scope": 12780,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IAxiomV1Verifier",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          12780
+        ],
+        "name": "IAxiomV1Verifier",
+        "nameLocation": "158:16:23",
+        "scope": 12781,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 23
+}
