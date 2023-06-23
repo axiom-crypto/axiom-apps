@@ -6,11 +6,13 @@ pragma solidity 0.8.19;
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {IAxiomV1Query} from "axiom-contracts/contracts/interfaces/IAxiomV1Query.sol";
 import "utils/RLPReader.sol";
+import "utils/UQ112x112.sol";
 
 contract UniswapV2Twap is Ownable {
     using RLPReader for RLPReader.RLPItem;
     using RLPReader for RLPReader.Iterator;
     using RLPReader for bytes;
+    using UQ112x112 for uint224;
 
     address public axiomQueryAddress;
     mapping(bytes28 => uint256) public twapPris;
@@ -21,17 +23,19 @@ contract UniswapV2Twap is Ownable {
         uint32 endBlockNumber,
         uint256 twapPri
     );
-    event UpdateAxiomAddress(address newAddress);
+
+    event UpdateAxiomQueryAddress(address newAddress);
 
     constructor(address _axiomQueryAddress) {
         axiomQueryAddress = _axiomQueryAddress;
+        emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
     function updateAxiomQueryAddress(
         address _axiomQueryAddress
     ) external onlyOwner {
         axiomQueryAddress = _axiomQueryAddress;
-        emit UpdateAxiomAddress(_axiomQueryAddress);
+        emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
     function _getTimestampFromBlock(
@@ -52,16 +56,19 @@ contract UniswapV2Twap is Ownable {
         uint112 reserve1,
         uint256 blockTimestamp,
         uint32 blockTimestampLast,
-        uint priceCumulativeLast
+        uint price1CumulativeLast
     ) internal pure returns (uint256) {
         //overflow is desired
         unchecked {
-            uint256 increment = uint(reserve1 / reserve0) *
-                (blockTimestamp - blockTimestampLast);
-            return increment + priceCumulativeLast;
+            uint256 increment = uint(
+                UQ112x112.encode(reserve1).uqdiv(reserve0)
+            ) * (blockTimestamp - blockTimestampLast);
+            return increment + price1CumulativeLast;
         }
     }
 
+    // slot is structured as follows:
+    // blockTimestampLast (32) . reserves1 (112) . reserves0 (112)
     function _unpackReserveValues(
         uint256 slot
     ) internal pure returns (uint112, uint112, uint32) {
@@ -70,6 +77,25 @@ contract UniswapV2Twap is Ownable {
         uint32 blockTimestampLast = uint32(slot);
         return (reserve0, reserve1, blockTimestampLast);
     }
+
+    /*  | Name                 | Type                                            | Slot | Offset | Bytes | Contract                                  |
+        |----------------------|-------------------------------------------------|------|--------|-------|-------------------------------------------|
+        | totalSupply          | uint256                                         | 0    | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | balanceOf            | mapping(address => uint256)                     | 1    | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | allowance            | mapping(address => mapping(address => uint256)) | 2    | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | DOMAIN_SEPARATOR     | bytes32                                         | 3    | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | nonces               | mapping(address => uint256)                     | 4    | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | factory              | address                                         | 5    | 0      | 20    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | token0               | address                                         | 6    | 0      | 20    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | token1               | address                                         | 7    | 0      | 20    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | reserve0             | uint112                                         | 8    | 0      | 14    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | reserve1             | uint112                                         | 8    | 14     | 14    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | blockTimestampLast   | uint32                                          | 8    | 28     | 4     | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | price0CumulativeLast | uint256                                         | 9    | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | price1CumulativeLast | uint256                                         | 10   | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | kLast                | uint256                                         | 11   | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair |
+        | unlocked             | uint256                                         | 12   | 0      | 32    | contracts/UniswapV2Pair.sol:UniswapV2Pair | 
+    */
 
     function calculateUniswapV2Twap(
         IAxiomV1Query.StorageResponse[] calldata storageProofs,
@@ -97,8 +123,8 @@ contract UniswapV2Twap is Ownable {
         );
         require(
             storageProofs[0].addr == storageProofs[1].addr &&
-                storageProofs[2].addr == storageProofs[3].addr &&
-                storageProofs[0].addr == storageProofs[2].addr,
+                storageProofs[0].addr == storageProofs[2].addr &&
+                storageProofs[0].addr == storageProofs[3].addr,
             "inconsistent pair address"
         );
         require(

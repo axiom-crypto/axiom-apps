@@ -18,16 +18,17 @@ contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
     /// @dev    This is the same as how Oracle.Observation is laid out in EVM storage EXCEPT that we set initialized = false (for some gas optimization reasons)
     mapping(bytes28 => bytes32) public twapObservations;
 
-    event UpdateAxiomAddress(address newAddress);
+    event UpdateAxiomQueryAddress(address newAddress);
 
 
     constructor(address _axiomQueryAddress) {
         axiomQueryAddress = _axiomQueryAddress;
+        emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
-    function updateAxiomAddress(address _axiomQueryAddress) external onlyOwner {
+    function updateAxiomQueryAddress(address _axiomQueryAddress) external onlyOwner {
         axiomQueryAddress = _axiomQueryAddress;
-        emit UpdateAxiomAddress(_axiomQueryAddress);
+        emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
     function unpackObservation(

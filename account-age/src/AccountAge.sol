@@ -13,6 +13,7 @@ contract AccountAge is Ownable {
 
     constructor(address _axiomQueryAddress) {
         axiomQueryAddress = _axiomQueryAddress;
+        emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
     function updateAxiomQueryAddress(
@@ -33,6 +34,8 @@ contract AccountAge is Ownable {
             accountProofs[0].blockNumber + 1 == accountProofs[1].blockNumber,
             "Block numbers are not consecutive"
         );
+        require(accountProofs[0].nonce == 0, "Prev block nonce is not 0");
+        require(accountProofs[1].nonce > 0, "No account transactions in curr block");
         uint addrSize;
         assembly {
             addrSize := extcodesize(account)

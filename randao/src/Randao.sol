@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 // WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
 // DO NOT USE THIS CONTRACT FOR PRODUCTION
-pragma solidity ^0.8.12;
+pragma solidity 0.8.19;
 
-import {IAxiomV1Query} from "axiom-contracts/contracts/interfaces/IAxiomV1Query.sol";
+import {IAxiomV1} from "axiom-contracts/contracts/interfaces/IAxiomV1.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 import {RLPReader} from "utils/RLPReader.sol";
 
@@ -11,7 +11,7 @@ contract Randao is Ownable {
     using RLPReader for RLPReader.RLPItem;
     using RLPReader for bytes;
 
-    address public axiomQueryAddress;
+    address public axiomAddress;
     uint32 MERGE_BLOCK = 15537393;
 
     // mapping between blockNumber and prevRandao
@@ -19,54 +19,46 @@ contract Randao is Ownable {
 
     event RandaoProof(uint32 blockNumber, uint256 prevRandao);
 
-    event UpdateAxiomQueryAddress(address newAddress);
+    event UpdateAxiomAddress(address newAddress);
 
-    constructor(address _axiomQueryAddress) {
-        axiomQueryAddress = _axiomQueryAddress;
+    constructor(address _axiomAddress) {
+        axiomAddress = _axiomAddress;
+        emit UpdateAxiomAddress(_axiomAddress);
     }
 
-    function updateAxiomAddress(address _axiomQueryAddress) external onlyOwner {
-        axiomQueryAddress = _axiomQueryAddress;
-        emit UpdateAxiomQueryAddress(_axiomQueryAddress);
-    }
-
-    function _getRandaoFromBlock(
-        uint32 blockNumber,
-        bytes32 blockHash,
-        bytes memory rlpEncodedHeader
-    ) internal pure returns (uint256) {
-        require(keccak256(rlpEncodedHeader) == blockHash, "invalid blockhash");
-
-        RLPReader.RLPItem[] memory ls = rlpEncodedHeader.toRlpItem().toList();
-        require(blockNumber == ls[8].toUint(), "invalid block number");
-        uint256 randao = ls[13].toUint();
-        return randao;
+    function updateAxiomAddress(address _axiomAddress) external onlyOwner {
+        axiomAddress = _axiomAddress;
+        emit UpdateAxiomAddress(_axiomAddress);
     }
 
     function verifyRandao(
-        IAxiomV1Query.BlockResponse[] calldata blockResponses,
-        bytes calldata header,
-        bytes32[3] calldata keccakResponses
+        IAxiomV1.BlockHashWitness calldata witness,
+        bytes calldata header
     ) external {
-        require(blockResponses.length == 1, "invalid blockResponses length");
+        if (block.number - witness.blockNumber <= 256) {
+            require(
+                IAxiomV1(axiomAddress).isRecentBlockHashValid(
+                    witness.blockNumber,
+                    witness.claimedBlockHash
+                ),
+                "Block hash was not validated in cache"
+            );
+        } else {
+            require(
+                IAxiomV1(axiomAddress).isBlockHashValid(witness),
+                "Block hash was not validated in cache"
+            );
+        }
+
         require(
-            IAxiomV1Query(axiomQueryAddress).areResponsesValid(
-                keccakResponses[0],
-                keccakResponses[1],
-                keccakResponses[2],
-                blockResponses,
-                new IAxiomV1Query.AccountResponse[](0),
-                new IAxiomV1Query.StorageResponse[](0)
-            ),
-            "invalid proofs"
-        );
-        uint256 prevRandao = _getRandaoFromBlock(
-            blockResponses[0].blockNumber,
-            blockResponses[0].blockHash,
-            header
+            witness.blockNumber > MERGE_BLOCK,
+            "prevRandao is not valid before merge block"
         );
 
-        prevRandaos[blockResponses[0].blockNumber] = prevRandao;
-        emit RandaoProof(blockResponses[0].blockNumber, prevRandao);
+        RLPReader.RLPItem[] memory headerItems = header.toRlpItem().toList();
+        uint256 prevRandao = headerItems[13].toUint();
+
+        prevRandaos[witness.blockNumber] = prevRandao;
+        emit RandaoProof(witness.blockNumber, prevRandao);
     }
 }

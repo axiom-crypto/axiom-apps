@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
 // DO NOT USE THIS CONTRACT FOR PRODUCTION
-pragma solidity >=0.8.0 <0.9.0;
+pragma solidity 0.8.19;
 
 import {IAxiomV1Query} from "axiom-contracts/contracts/AxiomV1Query.sol";
 import {Oracle} from "./Oracle.sol";
