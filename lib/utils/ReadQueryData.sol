@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.19;
 
-import "../axiom-contracts/contracts/interfaces/IAxiomV1Query.sol";
+import "../axiom-v1-contracts/contracts/interfaces/IAxiomV1Query.sol";
 import "../forge-std/src/console.sol";
 import "../forge-std/src/Vm.sol";
 import {stdJson} from "forge-std/StdJson.sol";

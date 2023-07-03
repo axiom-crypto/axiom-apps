@@ -39,7 +39,7 @@ contract RandaoTest is Test {
         });
         uint256 prevRandao = 0xa97f47e048f1ddf11b7a8d2c265014cfcec2506d765a393406f6046960d059dc;
 
-        Randao randao = new Randao(AXIOM_ADDRESS);
+        Randao randao = new Randao(AXIOM_ADDRESS, 15537393);
         randao.verifyRandao(testBlock, proof);
         require(randao.prevRandaos(testBlock.blockNumber) == prevRandao, "prevRandao not verified");
     }
@@ -74,7 +74,7 @@ contract RandaoTest is Test {
         });
         uint256 prevRandao = 0xa97f47e048f1ddf11b7a8d2c265014cfcec2506d765a393406f6046960d059dc;
 
-        Randao randao = new Randao(AXIOM_ADDRESS);
+        Randao randao = new Randao(AXIOM_ADDRESS, 15537394);
         randao.verifyRandao(testBlock, headerRlp);
         require(randao.prevRandaos(testBlock.blockNumber) == prevRandao, "prevRandao not verified");
     }

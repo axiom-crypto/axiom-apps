@@ -12,7 +12,7 @@ contract Randao is Ownable {
     using RLPReader for bytes;
 
     address public axiomAddress;
-    uint32 MERGE_BLOCK = 15537393;
+    uint32 public mergeBlock;
 
     // mapping between blockNumber and prevRandao
     mapping(uint32 => uint256) public prevRandaos;
@@ -21,8 +21,9 @@ contract Randao is Ownable {
 
     event UpdateAxiomAddress(address newAddress);
 
-    constructor(address _axiomAddress) {
+    constructor(address _axiomAddress, uint32 _mergeBlock) {
         axiomAddress = _axiomAddress;
+        mergeBlock = _mergeBlock;
         emit UpdateAxiomAddress(_axiomAddress);
     }
 
@@ -51,7 +52,7 @@ contract Randao is Ownable {
         }
 
         require(
-            witness.blockNumber > MERGE_BLOCK,
+            witness.blockNumber > mergeBlock,
             "prevRandao is not valid before merge block"
         );
 
