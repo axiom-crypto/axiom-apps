@@ -8,18 +8,13 @@ import "forge-std/console.sol";
 import "utils/ReadQueryData.sol";
 
 contract UinswapV3OracleTest is Test {
-    address AXIOM_QUERY_ADDRESS = 0x82842F7a41f695320CC255B34F18769D68dD8aDF;
+    address AXIOM_QUERY_ADDRESS = 0x4Fb202140c5319106F15706b1A69E441c9536306;
 
     function setUp() public {
-        string memory GOERLI_RPC_URL = string.concat(
-            "https://goerli.infura.io/v3/",
-            vm.envString("INFURA_ID")
-        ); 
-        vm.createSelectFork(GOERLI_RPC_URL, 9217410);
+        vm.createSelectFork("goerli", 9290313);
     }
 
     function getTestData() public view returns (IAxiomV1Query.StorageResponse[] memory, bytes32[3] memory) {
-
         string memory root = vm.projectRoot();
         //TODO: get working input data
         string memory path = string.concat(root, "/test/data/input.json");

@@ -10,8 +10,7 @@ contract RandaoTest is Test {
     address AXIOM_ADDRESS = 0x01d5b501C1fc0121e1411970fb79c322737025c2;
 
     function testVerifyRandaoRecent() public {
-        string memory MAINNET_RPC_URL = string.concat("https://mainnet.infura.io/v3/", vm.envString("INFURA_ID"));
-        vm.createSelectFork(MAINNET_RPC_URL, 16_509_500);
+        vm.createSelectFork("mainnet", 16_509_500);
 
         // Import test proof and instance calldata
         string[] memory inputs = new string[](2);
@@ -45,8 +44,7 @@ contract RandaoTest is Test {
     }
 
     function testVerifyRandaoOld() public {
-        string memory MAINNET_RPC_URL = string.concat("https://mainnet.infura.io/v3/", vm.envString("INFURA_ID"));
-        vm.createSelectFork(MAINNET_RPC_URL, 16_513_500);
+        vm.createSelectFork("mainnet", 16_513_500);
 
         // Import block header RLP as calldata
         string[] memory inputs = new string[](2);

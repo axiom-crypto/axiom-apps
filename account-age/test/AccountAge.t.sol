@@ -12,19 +12,14 @@ contract AccountAgeTest is Test {
     address AXIOM_QUERY_ADDRESS = 0x82842F7a41f695320CC255B34F18769D68dD8aDF;
 
     function setUp() public {
-        string memory GOERLI_RPC_URL = string.concat(
-            "https://goerli.infura.io/v3/",
-            vm.envString("INFURA_ID")
-        ); 
-        vm.createSelectFork(GOERLI_RPC_URL, 9213668);
+        vm.createSelectFork("goerli", 9213668);
     }
 
     function getTestData() public view returns (IAxiomV1Query.AccountResponse[] memory, bytes32[3] memory) {
-
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/test/data/input.json");
         string memory json = vm.readFile(path);
-        
+
         ReadQueryData.QueryResponse memory qr = ReadQueryData.readQueryResponses(json);
 
         return (qr.accountResponses, qr.keccakResponses);

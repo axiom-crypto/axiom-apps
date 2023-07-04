@@ -8,19 +8,23 @@ import "../src/UniswapV2Twap.sol";
 import "forge-std/console.sol";
 import "utils/ReadQueryData.sol";
 
-contract AccountAgeTest is Test {
+contract UniswapV2TwapTest is Test {
     address AXIOM_QUERY_ADDRESS = 0x82842F7a41f695320CC255B34F18769D68dD8aDF;
 
     function setUp() public {
-        string memory GOERLI_RPC_URL = string.concat(
-            "https://goerli.infura.io/v3/",
-            vm.envString("INFURA_ID")
-        ); 
-        vm.createSelectFork(GOERLI_RPC_URL, 9217410);
+        vm.createSelectFork("goerli", 9217410);
     }
 
-    function getTestData() public view returns (IAxiomV1Query.StorageResponse[] memory, IAxiomV1Query.BlockResponse[] memory, bytes[2] memory, bytes32[3] memory) {
-
+    function getTestData()
+        public
+        view
+        returns (
+            IAxiomV1Query.StorageResponse[] memory,
+            IAxiomV1Query.BlockResponse[] memory,
+            bytes[2] memory,
+            bytes32[3] memory
+        )
+    {
         string memory root = vm.projectRoot();
         string memory path = string.concat(root, "/test/data/input.json");
         string memory json = vm.readFile(path);
@@ -37,7 +41,12 @@ contract AccountAgeTest is Test {
     function testCalculateUniswapV2Twap() public {
         vm.pauseGasMetering();
         UniswapV2Twap uniswapV2Twap = new UniswapV2Twap(AXIOM_QUERY_ADDRESS);
-        (IAxiomV1Query.StorageResponse[] memory storageResponses, IAxiomV1Query.BlockResponse[] memory blockResponses, bytes[2] memory rlpHeaders, bytes32[3] memory keccakResponses) = getTestData();
+        (
+            IAxiomV1Query.StorageResponse[] memory storageResponses,
+            IAxiomV1Query.BlockResponse[] memory blockResponses,
+            bytes[2] memory rlpHeaders,
+            bytes32[3] memory keccakResponses
+        ) = getTestData();
         vm.resumeGasMetering();
         uniswapV2Twap.calculateUniswapV2Twap(storageResponses, blockResponses, rlpHeaders, keccakResponses);
     }
