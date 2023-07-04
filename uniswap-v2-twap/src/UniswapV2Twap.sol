@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
-// WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
+// WARNING! This smart contract has not been audited.
 // DO NOT USE THIS CONTRACT FOR PRODUCTION
+// This is an example contract to demonstrate how to integrate an application with the audited production release of AxiomV1 and AxiomV1Query.
 pragma solidity 0.8.19;
 
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
@@ -17,12 +18,7 @@ contract UniswapV2Twap is Ownable {
     address public axiomQueryAddress;
     mapping(bytes28 => uint256) public twapPris;
 
-    event UniswapV2TwapProof(
-        address pairAddress,
-        uint32 startBlockNumber,
-        uint32 endBlockNumber,
-        uint256 twapPri
-    );
+    event UniswapV2TwapProof(address pairAddress, uint32 startBlockNumber, uint32 endBlockNumber, uint256 twapPri);
 
     event UpdateAxiomQueryAddress(address newAddress);
 
@@ -31,18 +27,16 @@ contract UniswapV2Twap is Ownable {
         emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
-    function updateAxiomQueryAddress(
-        address _axiomQueryAddress
-    ) external onlyOwner {
+    function updateAxiomQueryAddress(address _axiomQueryAddress) external onlyOwner {
         axiomQueryAddress = _axiomQueryAddress;
         emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
-    function _getTimestampFromBlock(
-        uint32 blockNumber,
-        bytes32 blockHash,
-        bytes memory rlpEncodedHeader
-    ) internal pure returns (uint256) {
+    function _getTimestampFromBlock(uint32 blockNumber, bytes32 blockHash, bytes memory rlpEncodedHeader)
+        internal
+        pure
+        returns (uint256)
+    {
         require(keccak256(rlpEncodedHeader) == blockHash, "invalid blockhash");
 
         RLPReader.RLPItem[] memory ls = rlpEncodedHeader.toRlpItem().toList();
@@ -56,22 +50,19 @@ contract UniswapV2Twap is Ownable {
         uint112 reserve1,
         uint256 blockTimestamp,
         uint32 blockTimestampLast,
-        uint price1CumulativeLast
+        uint256 price1CumulativeLast
     ) internal pure returns (uint256) {
         //overflow is desired
         unchecked {
-            uint256 increment = uint(
-                UQ112x112.encode(reserve1).uqdiv(reserve0)
-            ) * (blockTimestamp - blockTimestampLast);
+            uint256 increment =
+                uint256(UQ112x112.encode(reserve1).uqdiv(reserve0)) * (blockTimestamp - blockTimestampLast);
             return increment + price1CumulativeLast;
         }
     }
 
     // slot is structured as follows:
     // blockTimestampLast (32) . reserves1 (112) . reserves0 (112)
-    function _unpackReserveValues(
-        uint256 slot
-    ) internal pure returns (uint112, uint112, uint32) {
+    function _unpackReserveValues(uint256 slot) internal pure returns (uint112, uint112, uint32) {
         uint112 reserve0 = uint112(slot >> 144);
         uint112 reserve1 = uint112(slot >> 32);
         uint32 blockTimestampLast = uint32(slot);
@@ -103,28 +94,21 @@ contract UniswapV2Twap is Ownable {
         bytes[2] calldata rlpEncodedHeaders,
         bytes32[3] calldata keccakResponses
     ) public returns (uint256) {
+        require(storageProofs[0].slot == 8 && storageProofs[2].slot == 8, "invalid reserve slot");
+        require(storageProofs[1].slot == 10 && storageProofs[3].slot == 10, "invalid cumulative price slot");
         require(
-            storageProofs[0].slot == 8 && storageProofs[2].slot == 8,
-            "invalid reserve slot"
-        );
-        require(
-            storageProofs[1].slot == 10 && storageProofs[3].slot == 10,
-            "invalid cumulative price slot"
-        );
-        require(
-            storageProofs[0].blockNumber == storageProofs[1].blockNumber &&
-                storageProofs[0].blockNumber == blockProofs[0].blockNumber,
+            storageProofs[0].blockNumber == storageProofs[1].blockNumber
+                && storageProofs[0].blockNumber == blockProofs[0].blockNumber,
             "inconsistent block number"
         );
         require(
-            storageProofs[2].blockNumber == storageProofs[3].blockNumber &&
-                storageProofs[2].blockNumber == blockProofs[1].blockNumber,
+            storageProofs[2].blockNumber == storageProofs[3].blockNumber
+                && storageProofs[2].blockNumber == blockProofs[1].blockNumber,
             "inconsistent block number"
         );
         require(
-            storageProofs[0].addr == storageProofs[1].addr &&
-                storageProofs[0].addr == storageProofs[2].addr &&
-                storageProofs[0].addr == storageProofs[3].addr,
+            storageProofs[0].addr == storageProofs[1].addr && storageProofs[0].addr == storageProofs[2].addr
+                && storageProofs[0].addr == storageProofs[3].addr,
             "inconsistent pair address"
         );
         require(
@@ -139,65 +123,33 @@ contract UniswapV2Twap is Ownable {
             "invalid proofs"
         );
 
-        uint256 blockTimestamp_k1 = _getTimestampFromBlock(
-            blockProofs[0].blockNumber,
-            blockProofs[0].blockHash,
-            rlpEncodedHeaders[0]
-        );
+        uint256 blockTimestamp_k1 =
+            _getTimestampFromBlock(blockProofs[0].blockNumber, blockProofs[0].blockHash, rlpEncodedHeaders[0]);
 
-        uint256 blockTimestamp_k2 = _getTimestampFromBlock(
-            blockProofs[1].blockNumber,
-            blockProofs[1].blockHash,
-            rlpEncodedHeaders[1]
-        );
+        uint256 blockTimestamp_k2 =
+            _getTimestampFromBlock(blockProofs[1].blockNumber, blockProofs[1].blockHash, rlpEncodedHeaders[1]);
 
-        (
-            uint112 reserve0_k1,
-            uint112 reserve1_k1,
-            uint32 blockTimestampLast_k1
-        ) = _unpackReserveValues(storageProofs[0].value);
+        (uint112 reserve0_k1, uint112 reserve1_k1, uint32 blockTimestampLast_k1) =
+            _unpackReserveValues(storageProofs[0].value);
 
-        (
-            uint112 reserve0_k2,
-            uint112 reserve1_k2,
-            uint32 blockTimestampLast_k2
-        ) = _unpackReserveValues(storageProofs[2].value);
+        (uint112 reserve0_k2, uint112 reserve1_k2, uint32 blockTimestampLast_k2) =
+            _unpackReserveValues(storageProofs[2].value);
 
         uint256 currentCumulativePrice_k1 = _currentCumulativePrice(
-            reserve0_k1,
-            reserve1_k1,
-            blockTimestamp_k1,
-            blockTimestampLast_k1,
-            storageProofs[1].value
+            reserve0_k1, reserve1_k1, blockTimestamp_k1, blockTimestampLast_k1, storageProofs[1].value
         );
 
         uint256 currentCumulativePrice_k2 = _currentCumulativePrice(
-            reserve0_k2,
-            reserve1_k2,
-            blockTimestamp_k2,
-            blockTimestampLast_k2,
-            storageProofs[3].value
+            reserve0_k2, reserve1_k2, blockTimestamp_k2, blockTimestampLast_k2, storageProofs[3].value
         );
 
-        uint256 twap = (currentCumulativePrice_k2 - currentCumulativePrice_k1) /
-            (blockTimestamp_k2 - blockTimestamp_k1);
+        uint256 twap = (currentCumulativePrice_k2 - currentCumulativePrice_k1) / (blockTimestamp_k2 - blockTimestamp_k1);
 
-        twapPris[
-            bytes28(
-                abi.encodePacked(
-                    storageProofs[0].addr,
-                    blockProofs[0].blockNumber,
-                    blockProofs[1].blockNumber
-                )
-            )
-        ] = twap;
+        twapPris[bytes28(
+            abi.encodePacked(storageProofs[0].addr, blockProofs[0].blockNumber, blockProofs[1].blockNumber)
+        )] = twap;
 
-        emit UniswapV2TwapProof(
-            storageProofs[0].addr,
-            blockProofs[0].blockNumber,
-            blockProofs[1].blockNumber,
-            twap
-        );
+        emit UniswapV2TwapProof(storageProofs[0].addr, blockProofs[0].blockNumber, blockProofs[1].blockNumber, twap);
 
         return twap;
     }

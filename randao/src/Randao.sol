@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
-// WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
+// WARNING! This smart contract has not been audited.
 // DO NOT USE THIS CONTRACT FOR PRODUCTION
+// This is an example contract to demonstrate how to integrate an application with the audited production release of AxiomV1.
 pragma solidity 0.8.19;
 
 import {IAxiomV1} from "axiom-contracts/contracts/interfaces/IAxiomV1.sol";
@@ -32,29 +33,17 @@ contract Randao is Ownable {
         emit UpdateAxiomAddress(_axiomAddress);
     }
 
-    function verifyRandao(
-        IAxiomV1.BlockHashWitness calldata witness,
-        bytes calldata header
-    ) external {
+    function verifyRandao(IAxiomV1.BlockHashWitness calldata witness, bytes calldata header) external {
         if (block.number - witness.blockNumber <= 256) {
             require(
-                IAxiomV1(axiomAddress).isRecentBlockHashValid(
-                    witness.blockNumber,
-                    witness.claimedBlockHash
-                ),
+                IAxiomV1(axiomAddress).isRecentBlockHashValid(witness.blockNumber, witness.claimedBlockHash),
                 "Block hash was not validated in cache"
             );
         } else {
-            require(
-                IAxiomV1(axiomAddress).isBlockHashValid(witness),
-                "Block hash was not validated in cache"
-            );
+            require(IAxiomV1(axiomAddress).isBlockHashValid(witness), "Block hash was not validated in cache");
         }
 
-        require(
-            witness.blockNumber > mergeBlock,
-            "prevRandao is not valid before merge block"
-        );
+        require(witness.blockNumber > mergeBlock, "prevRandao is not valid before merge block");
 
         RLPReader.RLPItem[] memory headerItems = header.toRlpItem().toList();
         uint256 prevRandao = headerItems[13].toUint();

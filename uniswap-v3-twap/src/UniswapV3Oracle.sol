@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
-// WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
+// WARNING! This smart contract has not been audited.
 // DO NOT USE THIS CONTRACT FOR PRODUCTION
-pragma solidity >=0.8.0 <0.9.0;
+// This is an example contract to demonstrate how to integrate an application with the audited production release of AxiomV1 and AxiomV1Query.
+pragma solidity 0.8.19;
 
 import "./Oracle.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
@@ -20,7 +21,6 @@ contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
 
     event UpdateAxiomQueryAddress(address newAddress);
 
-
     constructor(address _axiomQueryAddress) {
         axiomQueryAddress = _axiomQueryAddress;
         emit UpdateAxiomQueryAddress(_axiomQueryAddress);
@@ -31,17 +31,14 @@ contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
         emit UpdateAxiomQueryAddress(_axiomQueryAddress);
     }
 
-    function unpackObservation(
-        uint256 observation
-    ) internal pure returns (Oracle.Observation memory) {
+    function unpackObservation(uint256 observation) internal pure returns (Oracle.Observation memory) {
         // observation` (31 bytes) is single field element, concatenation of `secondsPerLiquidityCumulativeX128 . tickCumulative . blockTimestamp`
-        return
-            Oracle.Observation({
-                blockTimestamp: uint32(observation),
-                tickCumulative: int56(uint56(observation >> 32)),
-                secondsPerLiquidityCumulativeX128: uint160(observation >> 88),
-                initialized: true
-            });
+        return Oracle.Observation({
+            blockTimestamp: uint32(observation),
+            tickCumulative: int56(uint56(observation >> 32)),
+            secondsPerLiquidityCumulativeX128: uint160(observation >> 88),
+            initialized: true
+        });
     }
 
     /// @notice Verify a ZK proof of a Uniswap V3 TWAP oracle observation and verifies the validity of checkpoint blockhashes using Axiom.
@@ -62,18 +59,9 @@ contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
             Oracle.Observation memory endObservation
         )
     {
-        require(
-            storageProofs[0].slot == 8 && storageProofs[1].slot == 8,
-            "invalid reserve slot"
-        );
-        require(
-            storageProofs[1].blockNumber > storageProofs[0].blockNumber,
-            "end block must be after start block"
-        );
-        require(
-            storageProofs[0].addr == storageProofs[1].addr,
-            "inconsistent pool address"
-        );
+        require(storageProofs[0].slot == 8 && storageProofs[1].slot == 8, "invalid reserve slot");
+        require(storageProofs[1].blockNumber > storageProofs[0].blockNumber, "end block must be after start block");
+        require(storageProofs[0].addr == storageProofs[1].addr, "inconsistent pool address");
         require(
             IAxiomV1Query(axiomQueryAddress).areResponsesValid(
                 keccakResponses[0],
@@ -89,17 +77,9 @@ contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
         startObservation = unpackObservation(storageProofs[0].value);
         endObservation = unpackObservation(storageProofs[1].value);
 
-        twapObservations[
-            bytes28(
-                abi.encodePacked(
-                    storageProofs[0].addr,
-                    storageProofs[0].blockNumber,
-                    storageProofs[1].blockNumber
-                )
-            )
-        ] = keccak256(
-            abi.encodePacked(storageProofs[0].value, storageProofs[1].value)
-        );
+        twapObservations[bytes28(
+            abi.encodePacked(storageProofs[0].addr, storageProofs[0].blockNumber, storageProofs[1].blockNumber)
+        )] = keccak256(abi.encodePacked(storageProofs[0].value, storageProofs[1].value));
 
         emit UniswapV3TwapProof(
             storageProofs[0].addr,
@@ -109,16 +89,11 @@ contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
             endObservation
         );
 
-        uint32 secondsElapsed = endObservation.blockTimestamp -
-            startObservation.blockTimestamp;
+        uint32 secondsElapsed = endObservation.blockTimestamp - startObservation.blockTimestamp;
         // floor division
-        twaTick =
-            (endObservation.tickCumulative - startObservation.tickCumulative) /
-            int56(uint56(secondsElapsed));
+        twaTick = (endObservation.tickCumulative - startObservation.tickCumulative) / int56(uint56(secondsElapsed));
         // floor division
-        twaLiquidity =
-            ((uint160(1) << 128) * secondsElapsed) /
-            (endObservation.secondsPerLiquidityCumulativeX128 -
-                startObservation.secondsPerLiquidityCumulativeX128);
+        twaLiquidity = ((uint160(1) << 128) * secondsElapsed)
+            / (endObservation.secondsPerLiquidityCumulativeX128 - startObservation.secondsPerLiquidityCumulativeX128);
     }
 }

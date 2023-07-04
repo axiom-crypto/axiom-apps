@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
-// WARNING! This smart contract and the associated zk-SNARK verifiers have not been audited.
+// WARNING! This smart contract has not been audited.
 // DO NOT USE THIS CONTRACT FOR PRODUCTION
+// This is an example contract to demonstrate how to integrate an application with the audited production release of AxiomV1 and AxiomV1Query.
 pragma solidity 0.8.19;
 
 import {IAxiomV1Query} from "axiom-contracts/contracts/AxiomV1Query.sol";
