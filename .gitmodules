@@ -9,3 +9,4 @@
 [submodule "lib/axiom-v1-contracts"]
 	path = lib/axiom-v1-contracts
 	url = https://github.com/axiom-crypto/axiom-v1-contracts
+	branch = main
