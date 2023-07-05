@@ -9,10 +9,10 @@ import "forge-std/console.sol";
 import "utils/ReadQueryData.sol";
 
 contract UniswapV2TwapTest is Test {
-    address AXIOM_QUERY_ADDRESS = 0x82842F7a41f695320CC255B34F18769D68dD8aDF;
+    address AXIOM_QUERY_ADDRESS = 0x4Fb202140c5319106F15706b1A69E441c9536306;
 
     function setUp() public {
-        vm.createSelectFork("goerli", 9217410);
+        vm.createSelectFork("goerli", 9295080);
     }
 
     function getTestData()

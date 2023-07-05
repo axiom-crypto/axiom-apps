@@ -52,10 +52,10 @@ contract UniswapV2Twap is Ownable {
         uint32 blockTimestampLast,
         uint256 price1CumulativeLast
     ) internal pure returns (uint256) {
-        //overflow is desired
         unchecked {
+            uint32 timeElapsed = uint32(blockTimestamp) - blockTimestampLast; // overflow is desired
             uint256 increment =
-                uint256(UQ112x112.encode(reserve1).uqdiv(reserve0)) * (blockTimestamp - blockTimestampLast);
+                uint256(UQ112x112.encode(reserve1).uqdiv(reserve0)) * timeElapsed;
             return increment + price1CumulativeLast;
         }
     }
