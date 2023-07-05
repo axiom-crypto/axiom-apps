@@ -1,0 +1,39 @@
+{
+  "keccakResponses": {
+    "keccakBlockResponse": "0x30030c909ace6c24bc3b827fd4abe1b7dd97a1f3ccebea956b2688f08f424a4d",
+    "keccakAccountResponse": "0x139d6047b6cd1d6b9e11fdcee43bfcd8a7bbd4233e9abac910e4ba13ddc5f671",
+    "keccakStorageResponse": "0x38fdfa52afbc5c8cc1f58045a26c75af66b568b6b8fcb0689b3324dabf58d458"
+  },
+  "storageResponses": [
+    {
+      "blockNumber": "0x67711f",
+      "addr": "0x6337b3caf9c5236c7f3d1694410776119edaf9fa",
+      "slot": "0x08",
+      "value": "0x0100598e4d000000025d9579103e2bda07b596a74e00038a98c4518f625091c7",
+      "leafIdx": "0x00",
+      "proof": [
+        "0xfa0cd0e6d99d638e896cae9930fb5379117656c4f34f928438de4e0af8e45b1f",
+        "0xad3228b676f7d3cd4284a5443f17f1962b36e491b30a40b2405849e597ba5fb5",
+        "0xb4c11951957c6f8f642c4af61cd6b24640fec6dc7fc607ee8206a99e92410d30",
+        "0x21ddb9a356815c3fac1026b6dec5df3124afbadb485c9ba5a3e3398a04b7ba85",
+        "0xe58769b32a1beaf1ea27375a44095a0d1fb664ce2dd358e7fcbfb78c26a19344",
+        "0x0eb01ebfc9ed27500cd4dfc979272d1f0913cc9f66540d7e8005811109e1cf2d"
+      ]
+    },
+    {
+      "blockNumber": "0x76af77",
+      "addr": "0x6337b3caf9c5236c7f3d1694410776119edaf9fa",
+      "slot": "0x08",
+      "value": "0x0100adfb9400000757513914dc4d218055ce3828e80006b73aaebf47634b9be8",
+      "leafIdx": "0x01",
+      "proof": [
+        "0x37767e528346db7c3394a3e45f95f0854287bbbdc2b8586d959642d00c5a5489",
+        "0xad3228b676f7d3cd4284a5443f17f1962b36e491b30a40b2405849e597ba5fb5",
+        "0xb4c11951957c6f8f642c4af61cd6b24640fec6dc7fc607ee8206a99e92410d30",
+        "0x21ddb9a356815c3fac1026b6dec5df3124afbadb485c9ba5a3e3398a04b7ba85",
+        "0xe58769b32a1beaf1ea27375a44095a0d1fb664ce2dd358e7fcbfb78c26a19344",
+        "0x0eb01ebfc9ed27500cd4dfc979272d1f0913cc9f66540d7e8005811109e1cf2d"
+      ]
+    }
+  ]
+}

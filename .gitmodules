@@ -6,6 +6,7 @@
 	url = https://github.com/foundry-rs/forge-std
 [submodule "lib/forge-std/"]
 	branch = v1.2.0
-[submodule "uniswap-v3-oracles"]
-	path = uniswap-v3-oracles
-	url = https://github.com/axiom-crypto/uniswap-v3-oracles.git
+[submodule "lib/axiom-v1-contracts"]
+	path = lib/axiom-v1-contracts
+	url = https://github.com/axiom-crypto/axiom-v1-contracts
+	branch = main

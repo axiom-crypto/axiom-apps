@@ -1,1 +1,4 @@
-params
+.env
+broadcast/
+cache/
+out/

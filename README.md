@@ -17,12 +17,10 @@ cd axiom-apps
 cp .env.example .env
 ```
 
-Fill in `.env` with your `INFURA_ID`. In order for Forge to access `ETH_RPC_URL` for testing, we need to export `.env`:
+Fill in `.env` with your RPC provider URLs. In order for Forge to access these endpoints for testing, we need to source `.env`:
 
 ```bash
-set -a
 source .env
-set +a
 ```
 
 More detailed instructions are provided in each app's individual readme.
