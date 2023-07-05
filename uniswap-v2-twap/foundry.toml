@@ -4,6 +4,7 @@ out = 'out'
 ffi = true
 libs = ['../lib']
 fs_permissions = [{ access = "read", path = "./test/data"}]
+solc = "0.8.19"
 via_ir = true
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

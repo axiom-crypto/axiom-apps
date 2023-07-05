@@ -6,8 +6,7 @@ libs = ['../lib']
 optimizer = true
 optimizer_runs = 999999
 fs_permissions = [{ access = "read", path = "./test/data"}]
-via_ir = true
-# solc = "0.8.17"
+solc = "0.8.19"
 
 [profile.default.optimizer_details]
 constantOptimizer = true

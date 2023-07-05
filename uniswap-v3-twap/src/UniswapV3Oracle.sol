@@ -6,8 +6,7 @@ pragma solidity 0.8.19;
 
 import "./Oracle.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
-import {IUniswapV3Oracle} from "./IUniswapV3Oracle.sol";
-import {IAxiomV1Query} from "axiom-contracts/contracts/interfaces/IAxiomV1Query.sol";
+import {IUniswapV3Oracle, IAxiomV1Query} from "./IUniswapV3Oracle.sol";
 
 contract UniswapV3Oracle is Ownable, IUniswapV3Oracle {
     address private axiomQueryAddress;
