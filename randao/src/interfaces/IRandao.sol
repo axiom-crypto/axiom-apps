@@ -8,6 +8,5 @@ interface IRandao {
     function axiomAddress() external view returns (address);
     function mergeBlock() external view returns (uint32);
 
-    function updateAxiomAddress(address _axiomAddress) external;
     function verifyRandao(IAxiomV1.BlockHashWitness calldata witness, bytes calldata header) external;
 }
