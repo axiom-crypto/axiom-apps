@@ -44,6 +44,7 @@ contract Randao is Ownable {
         }
 
         require(witness.blockNumber > mergeBlock, "prevRandao is not valid before merge block");
+        require(witness.claimedBlockHash == keccak256(header), "Claimed block hash does not match header");
 
         RLPReader.RLPItem[] memory headerItems = header.toRlpItem().toList();
         uint256 prevRandao = headerItems[13].toUint();
